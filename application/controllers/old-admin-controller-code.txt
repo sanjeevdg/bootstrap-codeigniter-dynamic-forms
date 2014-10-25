@@ -1,0 +1,1690 @@
+function create_single_column_row($label,$name,$placeholder,$field_type,$required,$ht) {
+		
+		
+		$outstr = "";
+		
+		if ($field_type=="text") {
+		$outstr .= "<div class='row-fluid'>
+            <div class='span12 bgcolor'>
+              <label>".$label."</label>
+              <input type='text' name='".$name."' id='".$name."' class='span12 ".$required." input-mini' placeholder='".$placeholder."'>    
+              <p class='help-block'>".$ht."</p>
+            </div>
+          </div>";
+    
+    
+	}
+	else if ($field_type=="radio")		{
+		
+		$outstr .= "<div class='row-fluid'>
+            <div class='span12 bgcolor'>
+            
+              <label>".$label."</label>";
+              foreach (explode("\n",$this->input->post('select_options')) as $kk => $vv){
+              $outstr .= "<label class='radio inline'><input type='radio' name='".$name."' value='".$vv."' id='".$name."' class='span12 ".$required." input-mini' placeholder='".$placeholder."'>";
+              $outstr .= $vv."</label>";
+		  }
+              
+              $outstr .= "<p class='help-block'>".$ht."</p>
+                 </div></div>";
+		
+	}
+	else if ($field_type=="checkbox")		{
+		
+		$outstr .= "<div class='row-fluid'>
+            <div class='span12 bgcolor'>
+              <label>".$label."</label>";
+              foreach (explode("\n",$this->input->post('select_options')) as $kk => $vv){
+              $outstr .= "<label class='radio inline'><input type='checkbox' name='".$name."' value='".$vv."' id='".$name."' class='span12 ".$required." input-mini' placeholder='".$placeholder."'>";    
+              $outstr .= $vv."</label>";
+              
+			}
+              $outstr .= "<p class='help-block'>".$vv."</p>";
+              $outstr .= "</div></div>";
+		
+	}		
+	else if ($field_type=="select")		{
+		
+		$outstr .= "<div class='row-fluid'>
+            <div class='span12 bgcolor'>
+              <label>".$label."</label>
+              <select name='".$name."' id='".$name."' class='span12 ".$required." input-mini' placeholder='".$placeholder."'> ";
+              foreach (explode("\n",$this->input->post('select_options')) as $kk => $vv){
+				$outstr .= "  <option value='".$vv."'>".$vv."</option>";
+              }
+              $outstr .= "</select>   
+              <p class='help-block'>".$ht."</p>
+                </div>";
+		
+	}		
+	else if ($field_type=="select_multiple")		{
+		
+		$outstr .= "<div class='row-fluid'>
+            <div class='span12 bgcolor'>
+              <label>".$label."</label>
+              <select multiple name='".$name."' id='".$name."' class='span12 ".$required." input-mini' placeholder='".$placeholder."'>    ";
+              foreach (explode("\n",$this->input->post('select_options')) as $kk => $vv){
+				$outstr .= "  <option value='".$vv."'>".$vv."</option>";
+              }
+              $outstr .= "</select>
+              <p class='help-block'>".$ht."</p>
+            </div>
+          </div>";
+		
+	}		
+	else if ($field_type=="date")		{
+		
+		$outstr .= "<div class='row-fluid'>
+            <div class='span12 bgcolor'>
+              <label>".$label."</label>
+              <input type='text' name='".$name."' id='".$name."' class='span12 ".$required." input-mini' placeholder='".$placeholder."'>    
+              <p class='help-block'>".$ht."</p>
+            </div>
+          </div> <script>
+  $(function() {
+    $( '#".$name."' ).datepicker();
+  });
+  </script>";
+		
+	}		
+		else if ($field_type=="textarea")		{
+		
+		$outstr .= "<div class='row-fluid'>
+            <div class='span12 bgcolor'>
+              <label>".$label."</label>
+              <textarea type='text' name='".$name."' id='".$name."' class='span12 ".$required." input-mini' placeholder='".$placeholder."'> </textarea>   
+              <p class='help-block'>".$ht."</p>
+            </div>
+          </div>";
+		
+	}	
+	else if ($field_type=="file")		{
+		
+		$outstr .= "<div class='row-fluid'>
+            <div class='span12 bgcolor'>
+              <label>".$label."</label>
+              <input type='file' name='".$name."' id='".$name."' class='span12 ".$required." input-file uniform_on' placeholder='".$placeholder."'>    
+              <p class='help-block'>".$ht."</p>
+            </div>
+          </div>";
+		
+	}		
+    else if ($field_type=="grid") {
+		$ngc = intval($this->input->post('num_grid_cols'));
+		$ngr = intval($this->input->post('num_grid_rows'));
+		
+		$outstr .= "<div class='row-fluid sortable'>
+				<div class='box span12'>
+					<div class='box-header well' data-original-title>
+						<h2><i class='icon-th'></i>".$name."</h2>
+						<div class='box-icon'>
+							<a href='#' class='btn btn-setting btn-round'><i class='icon-cog'></i></a>
+							<a href='#' class='btn btn-minimize btn-round'><i class='icon-chevron-up'></i></a>
+							<a href='#' class='btn btn-close btn-round'><i class='icon-remove'></i></a>
+						</div>
+					</div>
+					<div class='box-content'>
+                  	<div class='row-fluid'>";
+        $outstr .= "<input type='hidden' name='num_grid_cols' id='num_grid_cols' value='".$ngc."'>
+					<input type='hidden' name='num_grid_rows' id='num_grid_rows' value='".$ngr."'>";
+		          	
+                  	$mys = round(12/$ngc, 0, PHP_ROUND_HALF_DOWN);
+                  	
+                  	for ($i=0;$i<$ngc;$i++) {
+					$outstr .="<div class='span".$mys."'><label>".$this->input->post('header_'.$i)."</label>	</div>";
+						
+					}
+                  	
+                  $outstr .= "</div>";                   	
+                  	
+                  	for ($i=0;$i<$ngr;$i++) {
+						$outstr .= "<div class='row-fluid'>";
+							for ($k=0;$k<$ngc;$k++) {
+						if ($this->input->post('field_type_'.$k)=='text'){
+                  $outstr .= "<div class='span".$mys."'><input type='text' name='".$this->input->post('header_'.$k)."_".$i."' id='".$this->input->post('header_'.$k)."_".$i."' class='span12 input-mini'/> </label></div>";
+                  
+					}
+					else if ($this->input->post('field_type_'.$k)=='radio') {
+						
+		// <div class='row-fluid'>
+        $outstr .= "    <div class='span".$mys." bgcolor'>";
+            
+              // <label>".$label."</label>";
+              foreach (explode("\n",$this->input->post('select_options')) as $kk => $vv){
+              $outstr .= "<label class='radio inline'><input type='radio' name='".$this->input->post('header_'.$k)."' value='".$vv."' id='".$this->input->post('header_'.$k)."' class='span12 input-mini'>";
+              $outstr .= $vv."</label>";
+		  }
+              
+              // $outstr .= "<p class='help-block'>".$ht."</p>
+                $outstr .= " </div>";
+						
+						
+					}
+		else if ($this->input->post('field_type_'.$k)=="checkbox")		{
+		
+		// <div class='row-fluid'>
+        $outstr .= "    <div class='span".$mys." bgcolor'>";
+              //<label>".$this->input->post('header_'.$k)."</label>";
+              foreach (explode("\n",$this->input->post('select_options')) as $kk => $vv){
+              $outstr .= "<label class='radio inline'><input type='checkbox' name='".$this->input->post('header_'.$k)."' value='".$vv."' id='".$this->input->post('header_'.$k)."' class='span12 input-mini'>";    
+              $outstr .= $vv."</label>";
+              
+			}
+              //$outstr .= "<p class='help-block'>".$vv."</p>";
+              $outstr .= "</div>";
+		
+	}
+	else if ($this->input->post('field_type_'.$k)=="select")		{
+		
+		$outstr .= "<div class='span".$mys." bgcolor'>
+                   <select name='".$this->input->post('header_'.$k)."_".$i."' id='".$this->input->post('header_'.$k)."_".$i."' class='span12 input-mini'> ";
+              foreach (explode("\n",$this->input->post('select_options')) as $kk => $vv){
+				$outstr .= "  <option value='".$vv."'>".$vv."</option>";
+              }
+              $outstr .= "</select>   
+                            </div>";
+		
+	}		
+	else if ($this->input->post('field_type_'.$k)=="select_multiple")		{
+		
+		$outstr .= "<div class='span".$mys." bgcolor'>
+                       <select multiple name='".$this->input->post('header_'.$k)."_".$i."' id='".$this->input->post('header_'.$k)."_".$i."' class='span12 input-mini'>    ";
+              foreach (explode("\n",$this->input->post('select_options')) as $kk => $vv){
+				$outstr .= "  <option value='".$vv."'>".$vv."</option>";
+              }
+              $outstr .= "</select>
+                        </div>";
+		
+	}		
+	else if ($this->input->post('field_type_'.$k)=="date")		{
+		
+		$outstr .= "<div class='span".$mys." bgcolor'>
+                 <input type='text' name='".$this->input->post('header_'.$k)."_".$i."' id='".$this->input->post('header_'.$k)."_".$i."' class='span12 input-mini'>    
+                   </div> <script>
+  $(function() {
+    $( '#".$this->input->post('header_'.$k)."_".$i."' ).datepicker();
+  });
+  </script>";
+		
+	}		
+		else if ($this->input->post('field_type_'.$k)=="textarea")		{
+		
+		$outstr .= "<div class='span".$mys." bgcolor'>
+                            <textarea type='text' name='".$this->input->post('header_'.$k)."_".$i."' id='".$this->input->post('header_'.$k)."_".$i."' class='span12 input-mini'> </textarea>   
+              </div>";
+		
+	}	
+	else if ($this->input->post('field_type_'.$k)=="file")		{
+		
+		$outstr .= "<div class='span".$mys." bgcolor'>
+          
+              <input type='file' name='".$this->input->post('header_'.$k)."_".$i."' id='".$this->input->post('header_'.$k)."_".$i."' class='span12 input-file uniform_on'>    
+          
+            </div>";
+          
+		
+	}				
+				
+					}
+					$outstr .="</div>";
+				}
+                  $outstr .="  </div>                   
+                  </div>
+                  <p class='help-block'>".$ht."</p>
+				</div><!--/span-->
+			</div><!--/row-->";
+	
+}
+	
+	return $outstr;
+}
+
+function create_double_column_row($field_labela,$field_namea,$placeholdera,$field_typea,$field_requireda,$hta,$field_labelb,$field_nameb,$placeholderb,$field_typeb,$field_requiredb,$htb) {
+		$outstr = "";
+		if ($field_typea=="text") {
+		$outstr .=	"<div class='row-fluid'>   
+            <div class='span5 lightblue'>
+              <label>".$field_labela."</label>
+              <input type='text' name='".$field_namea."' id='".$field_namea."' class='".$field_requireda." span12' placeholder='".$placeholdera."'/>           
+              <p class='help-block'>".$hta."</p>
+            </div><!--/span-->";
+		}
+		
+         else if ($field_typea=="radio") {
+		$outstr .=	"<div class='row-fluid'>   
+            <div class='span5 lightblue'>
+              <label>".$field_labela."</label>";
+                    foreach (explode("\n",$this->input->post('select_optionsa')) as $kk => $vv){
+              $outstr .= "<label class='radio inline'><input type='radio' name='".$field_namea."' value='".$vv."' class='".$field_requireda." span12' placeholder='".$placeholdera."'>".$vv."</label>";
+		  }           
+              $outstr .= "<p class='help-block'>".$hta."</p>
+            </div><!--/span-->";
+		
+		}   
+        else if ($field_typea=="checkbox") {
+		$outstr .=	"<div class='row-fluid'>   
+            <div class='span5 lightblue'>
+              <label>".$field_labela."</label>";
+              foreach (explode("\n",$this->input->post('select_optionsa')) as $kk => $vv){
+              
+              $outstr .= "<label class='radio inline'><input type='checkbox' name='".$field_namea."' value='".$vv."' class='".$field_requireda." span12' placeholder='".$placeholdera."'>".$vv."</label>";
+              
+		  }
+              $outstr .= "<p class='help-block'>".$hta."</p>
+            </div><!--/span-->";
+		
+		}
+		else if ($field_typea=="select")		{
+		
+		$outstr .= "<div class='row-fluid'>
+            <div class='span5 bgcolor'>
+              <label>".$field_labela."</label>
+              <select name='".$field_namea."' id='".$field_namea."' class='span12 ".$field_requireda." input-mini' placeholder='".$placeholdera."'> ";
+              foreach (explode("\n",$this->input->post('select_optionsa')) as $kk => $vv){
+				$outstr .= "  <option value='".$vv."'>".$vv."</option>";
+              }
+              $outstr .= "</select>   
+              <p class='help-block'>".$hta."</p>
+             </div>";
+		
+	}		
+	else if ($field_typea=="select_multiple")		{
+		
+		$outstr .= "<div class='row-fluid'>
+            <div class='span5 bgcolor'>
+              <label>".$field_labela."</label>
+              <select multiple name='".$field_namea."' id='".$field_namea."' class='span12 ".$field_requireda." input-mini' placeholder='".$placeholdera."'>    ";
+              foreach (explode("\n",$this->input->post('select_optionsa')) as $kk => $vv){
+				$outstr .= "  <option value='".$vv."'>".$vv."</option>";
+              }
+              $outstr .= "</select>
+              <p class='help-block'>".$hta."</p>
+              </div>";
+		
+	}		
+		else if ($field_typea=="textarea") {
+		$outstr .=	"<div class='row-fluid'>   
+            <div class='span5 lightblue'>
+              <label>".$field_labela."</label>
+              <textare name='".$field_namea."' ".$field_requireda." id=".$field_namea." class='span12' placeholder='".$placeholdera."'></textarea>           
+              <p class='help-block'>".$hta."</p>
+            </div><!--/span-->";
+		
+		}
+		else if ($field_typea=="date")		{
+		
+		$outstr .= "<div class='row-fluid'>
+            <div class='span5 bgcolor'>
+              <label>".$field_labela."</label>
+              <input type='text' name='".$field_namea."' id='".$field_namea."' class='span12 ".$field_requireda." input-mini' placeholder='".$placeholdera."'>    
+              <p class='help-block'>".$hta."</p>
+             </div> <script>
+  $(function() {
+    $( '#".$field_namea."' ).datepicker();
+  });
+  </script>";
+		
+	}		
+		else if ($field_typea=="file") {
+		$outstr .=	"<div class='row-fluid'>   
+            <div class='span5 lightblue'>
+              <label>".$field_labela."</label>
+              <input type='file' name='".$field_namea."' id=".$field_namea." class=' ".$field_requireda." span12 input-file uniform_on' placeholder='".$placeholdera."'>           
+              <p class='help-block'>".$hta."</p>
+            </div><!--/span-->";
+		
+		}
+		
+		if ($field_typeb=="text") {
+		$outstr .=	"<div class='row-fluid'>   
+            <div class='span5 lightblue'>
+              <label>".$field_labelb."</label>
+              <input type='text' name='".$field_nameb."' id='".$field_nameb."' class='".$field_requiredb." span12' placeholder='".$placeholderb."'>           
+              <p class='help-block'>".$htb."</p>
+            </div><!--/span-->";
+		}
+         else if ($field_typeb=="radio") {
+		$outstr .=	"<div class='row-fluid'>   
+            <div class='span5 lightblue'>
+              <label>".$field_labelb."</label>";
+              foreach (explode("\n",$this->input->post('select_optionsb')) as $kk => $vv){
+              $outstr .= "<label class='radio inline'><input type='radio' name='".$field_nameb."' value='".$vv."' class='".$field_requiredb." span12' placeholder='".$placeholderb."'>".$vv."</label>";           
+		  }
+              $outstr .= "<p class='help-block'>".$htb."</p>
+            </div><!--/span-->";
+		
+		}   
+        else if ($field_typeb=="checkbox") {
+		$outstr .=	"<div class='row-fluid'>   
+            <div class='span5 lightblue'>
+              <label>".$field_labelb."</label>";
+              foreach (explode("\n",$this->input->post('select_optionsb')) as $kk => $vv){
+              $outstr .= "<label class='radio inline'><input type='checkbox' name='".$field_nameb."' value='".$vv."' class='".$field_requiredb." span12' placeholder='".$placeholderb."'>".$vv."</label>";
+		  }
+              $outstr .= "<p class='help-block'>".$htb."</p>
+            </div><!--/span-->";
+		
+		}
+		else if ($field_typeb=="textarea") {
+		$outstr .=	"<div class='row-fluid'>   
+            <div class='span5 lightblue'>
+              <label>".$field_labelb."</label>
+              <textarea name='".$field_nameb."' id=".$field_nameb." class='".$field_requiredb." span12' placeholder='".$placeholderb."'></textarea>           
+              <p class='help-block'>".$htb."</p>
+            </div><!--/span-->";
+		
+		}
+		else if ($field_typeb=="select")		{
+		
+		$outstr .= "<div class='row-fluid'>
+            <div class='span5 bgcolor'>
+              <label>".$field_labelb."</label>
+              <select name='".$field_nameb."' id='".$field_nameb."' class='span12 ".$field_requiredb." input-mini' placeholder='".$placeholderb."'> ";
+              foreach (explode("\n",$this->input->post('select_optionsb')) as $kk => $vv){
+				$outstr .= "  <option value='".$vv."'>".$vv."</option>";
+              }
+              $outstr .= "</select>   
+              <p class='help-block'>".$htb."</p>
+              </div>";
+		
+	}		
+	else if ($field_typeb=="select_multiple")		{
+		
+		$outstr .= "<div class='row-fluid'>
+            <div class='span5 bgcolor'>
+              <label>".$field_labelb."</label>
+              <select multiple name='".$field_nameb."' id='".$field_nameb."' class='span12 ".$field_requiredb." input-mini' placeholder='".$placeholderb."'>    ";
+              foreach (explode("\n",$this->input->post('select_optionsb')) as $kk => $vv){
+				$outstr .= "  <option value='".$vv."'>".$vv."</option>";
+              }
+              $outstr .= "</select>
+              <p class='help-block'>".$htb."</p>
+              </div>";
+		
+	}	else if ($field_typeb=="date")		{
+		
+		$outstr .= "<div class='row-fluid'>
+            <div class='span5 bgcolor'>
+              <label>".$field_labelb."</label>
+              <input type='text' name='".$field_nameb."' id='".$field_nameb."' class='span12 ".$field_requiredb." input-mini' placeholder='".$placeholderb."'>    
+              <p class='help-block'>".$htb."</p>
+             </div> <script>
+  $(function() {
+    $( '#".$field_nameb."' ).datepicker();
+  });
+  </script>";
+		
+	}	
+		else if ($field_typeb=="file") {
+		$outstr .=	"<div class='row-fluid'>   
+            <div class='span5 lightblue'>
+              <label>".$field_labelb."</label>
+              <input type='file' name='".$field_nameb."' id=".$field_nameb." class=' ".$field_requiredb."  input-file uniform_on span12' placeholder='".$placeholderb."'>           
+              <p class='help-block'>".$htb."</p>
+            </div><!--/span-->";
+		}
+		return $outstr;
+	}
+	
+	function create_triple_column_row($field_labela,$field_namea,$placeholdera,$field_typea,$field_requireda,$hta,$field_labelb,$field_nameb,$placeholderb,$field_typeb,$field_requiredb,$htb,$field_labelc,$field_namec,$placeholderc,$field_typec,$field_requiredc,$htc) {
+		
+		
+		$outstr = "";
+		if ($field_typea=="text") {
+		$outstr .=	"<div class='row-fluid'>   
+            <div class='span4 lightblue'>
+              <label>".$field_labela."</label>
+              <input type='text' name='".$field_namea."' ".$field_requireda." id=".$field_namea." class='span8' placeholder='".$placeholdera."'>           
+              <p class='help-block'>".$hta."</p>
+            </div><!--/span-->";
+		}
+         else if ($field_typea=="radio") {
+		$outstr .=	"<div class='row-fluid'>   
+            <div class='span4 lightblue'>
+              <label>".$field_labela."</label>";
+              foreach (explode("\n",$this->input->post('select_optionsa')) as $kk => $vv){
+              $outstr .= "<label class='radio inline'><input type='radio' name='".$field_namea."' value='".$vv."' class='".$field_requireda." span8' placeholder='".$placeholdera."'>".$vv."</label>";
+		  }
+              $outstr .=	"<p class='help-block'>".$hta."</p>
+            </div><!--/span-->";
+		
+		}   
+        else if ($field_typea=="checkbox") {
+		$outstr .=	"<div class='row-fluid'>   
+            <div class='span4 lightblue'>
+              <label>".$field_labela."</label>";
+              foreach (explode("\n",$this->input->post('select_optionsa')) as $kk => $vv){
+              $outstr .= "<label class='radio inline'><input type='checkbox' name='".$field_namea."' value='".$vv."' class='".$field_requireda." span8' placeholder='".$placeholdera."'>".$vv."</label>";           
+		  }
+              $outstr .= "<p class='help-block'>".$hta."</p>
+            </div><!--/span-->";
+		
+		}
+		else if ($field_typea=="textarea") {
+		$outstr .=	"<div class='row-fluid'>   
+            <div class='span4 lightblue'>
+              <label>".$field_labela."</label>
+              <textare name='".$field_namea."' id='".$field_namea."' class='".$field_requireda." span8' placeholder='".$placeholdera."'></textarea>           
+              <p class='help-block'>".$hta."</p>
+            </div><!--/span-->";
+		
+		}
+		else if ($field_typea=="select")		{
+		
+		$outstr .= "<div class='row-fluid'>
+            <div class='span4 bgcolor'>
+              <label>".$field_labela."</label>
+              <select name='".$field_namea."' id='".$field_namea."' class='span8 ".$field_requireda." input-mini' placeholder='".$placeholdera."'> ";
+              foreach (explode("\n",$this->input->post('select_optionsa')) as $kk => $vv){
+				$outstr .= "  <option value='".$vv."'>".$vv."</option>";
+              }
+              $outstr .= "</select>   
+              <p class='help-block'>".$hta."</p>
+          
+          </div>";
+		
+	}		
+	else if ($field_typea=="select_multiple")		{
+		
+		$outstr .= "<div class='row-fluid'>
+            <div class='span4 bgcolor'>
+              <label>".$field_labela."</label>
+              <select multiple name='".$field_namea."' id='".$field_namea."' class='span8 ".$field_requireda." input-mini' placeholder='".$placeholdera."'>    ";
+              foreach (explode("\n",$this->input->post('select_optionsa')) as $kk => $vv){
+				$outstr .= "  <option value='".$vv."'>".$vv."</option>";
+              }
+              $outstr .= "</select>
+              <p class='help-block'>".$hta."</p>
+          
+          </div>";
+		
+	}	else if ($field_typea=="date")		{
+		
+		$outstr .= "<div class='row-fluid'>
+            <div class='span4 bgcolor'>
+              <label>".$field_labela."</label>
+              <input type='text' name='".$field_namea."' id='".$field_namea."' class='span8 ".$field_requireda." input-mini' placeholder='".$placeholdera."'>    
+              <p class='help-block'>".$hta."</p>
+          
+          </div> <script>
+  $(function() {
+    $( '#".$field_namea."' ).datepicker();
+  });
+  </script>";
+		
+	}	
+		else if ($field_typea=="file") {
+		$outstr .=	"<div class='row-fluid'>   
+            <div class='span4 lightblue'>
+              <label>".$field_labela."</label>
+              <input type='file' name='".$field_namea."' id=".$field_namea." class=' ".$field_requireda." input-file uniform_on span12' placeholder='".$placeholdera."'>           
+              <p class='help-block'>".$hta."</p>
+            </div><!--/span-->";
+		
+		}
+		
+		if ($field_typeb=="text") {
+		$outstr .=	"<div class='row-fluid'>   
+            <div class='span4 lightblue'>
+              <label>".$field_labelb."</label>
+              <input type='text' name='".$field_nameb."' ".$field_requiredb." id=".$field_nameb." class='span8' placeholder='".$placeholderb."'>           
+              <p class='help-block'>".$htb."</p>
+            </div><!--/span-->";
+		}
+         else if ($field_typeb=="radio") {
+		$outstr .=	"<div class='row-fluid'>   
+            <div class='span4 lightblue'>
+              <label>".$field_labelb."</label>";
+              foreach (explode("\n",$this->input->post('select_optionsb')) as $kk => $vv){
+				  
+        $outstr .= "<label class='radio inline'>     <input type='radio' name='".$field_nameb."' value='".$vv."' class='".$field_requiredb." span8' placeholder='".$placeholderb."'>".$vv."</label>"; 
+	}          
+              $outstr .= "<p class='help-block'>".$htb."</p>
+            </div><!--/span-->";
+		
+		}   
+        else if ($field_typeb=="checkbox") {
+		$outstr .=	"<div class='row-fluid'>   
+            <div class='span4 lightblue'>
+              <label>".$field_labelb."</label>";
+              foreach (explode("\n",$this->input->post('select_optionsb')) as $kk => $vv){
+				  
+        $outstr .= "<label class='radio inline'>
+              <input type='checkbox' name='".$field_nameb."' class='".$field_requiredb." span8' placeholder='".$placeholderb."'>           
+              ".$vv."</label>";
+		  }
+        $outstr .=      "<p class='help-block'>".$htb."</p>
+            </div><!--/span-->";
+		
+		}
+		else if ($field_typeb=="textarea") {
+		$outstr .=	"<div class='row-fluid'>   
+            <div class='span4 lightblue'>
+              <label>".$field_labelb."</label>
+              <textare name='".$field_nameb."' id='".$field_nameb."' class='".$field_requiredb." span8' placeholder='".$placeholderb."'></textarea>           
+              <p class='help-block'>".$htb."</p>
+            </div><!--/span-->";
+		
+		}
+		else if ($field_typeb=="select")		{
+		
+		$outstr .= "<div class='row-fluid'>
+            <div class='span4 bgcolor'>
+              <label>".$field_labelb."</label>
+              <select name='".$field_nameb."' id='".$field_nameb."' class='span8 ".$field_requiredb." input-mini' placeholder='".$placeholderb."'> ";
+              foreach (explode("\n",$this->input->post('select_optionsb')) as $kk => $vv){
+				$outstr .= "  <option value='".$vv."'>".$vv."</option>";
+              }
+              $outstr .= "</select>   
+              <p class='help-block'>".$htb."</p>
+              </div>";
+		
+	}		
+	else if ($field_typeb=="select_multiple")		{
+		
+		$outstr .= "<div class='row-fluid'>
+            <div class='span4 bgcolor'>
+              <label>".$field_labelb."</label>
+              <select multiple name='".$field_nameb."' id='".$field_nameb."' class='span8 ".$field_requiredb." input-mini' placeholder='".$placeholderb."'>    ";
+              foreach (explode("\n",$this->input->post('select_optionsb')) as $kk => $vv){
+				$outstr .= "  <option value='".$vv."'>".$vv."</option>";
+              }
+              $outstr .= "</select>
+              <p class='help-block'>".$htb."</p>
+             </div>";
+		
+	}	else if ($field_typeb=="date")		{
+		
+		$outstr .= "<div class='row-fluid'>
+            <div class='span4 bgcolor'>
+              <label>".$field_labelb."</label>
+              <input type='text' name='".$field_nameb."' id='".$field_nameb."' class='span8 ".$field_requiredb." input-mini' placeholder='".$placeholderb."'>    
+              <p class='help-block'>".$htb."</p>
+            </div>
+           <script>
+  $(function() {
+    $( '#".$field_nameb."' ).datepicker();
+  });
+  </script>";
+		
+	}	
+		else if ($field_typeb=="file") {
+		$outstr .=	"<div class='row-fluid'>   
+            <div class='span4 lightblue'>
+              <label>".$field_labelb."</label>
+              <input type='file' name='".$field_nameb."' id=".$field_nameb." class='".$field_requiredb." input-file uniform_on span12' placeholder='".$placeholderb."'>           
+              <p class='help-block'>".$htb."</p>
+            </div><!--/span-->";
+		
+		}
+		if ($field_typec=="text") {
+		$outstr .=	"<div class='row-fluid'>   
+            <div class='span4 lightblue'>
+              <label>".$field_labelc."</label>
+              <input type='text' name='".$field_namec."' id=".$field_namec." class='".$field_requiredc." span8' placeholder='".$placeholderc."'>           
+              <p class='help-block'>".$htc."</p>
+            </div><!--/span-->";
+		}
+         else if ($field_typec=="radio") {
+		$outstr .=	"<div class='row-fluid'>   
+            <div class='span4 lightblue'>
+              <label>".$field_labelc."</label>";
+              foreach (explode("\n",$this->input->post('select_optionsc')) as $kk => $vv){
+				  
+        $outstr .= "<label class='radio inline'>
+              <input type='radio' name='".$field_namec."' value='".$vv."' class='".$field_requiredc." span8' placeholder='".$placeholderc."'>           
+              ".$vv."</label>";
+		  }
+        $outstr .= "      <p class='help-block'>".$htc."</p>
+            </div><!--/span-->";
+		
+		}   
+        else if ($field_typec=="checkbox") {
+		$outstr .=	"<div class='row-fluid'>   
+            <div class='span4 lightblue'>
+              <label>".$field_labelc."</label>";
+              foreach (explode("\n",$this->input->post('select_optionsc')) as $kk => $vv){
+				  
+        $outstr .= "<label class='radio inline'>
+              
+              <input type='checkbox' name='".$field_namec."' value='".$vv."' class='".$field_requiredc." span8' placeholder='".$placeholderc."'>           
+              ".$vv."</label>";
+		  }
+              
+        $outstr .=      "<p class='help-block'>".$htc."</p>
+            </div><!--/span-->";
+		
+		}
+		else if ($field_typec=="textarea") {
+		$outstr .=	"<div class='row-fluid'>   
+            <div class='span4 lightblue'>
+              <label>".$field_labelc."</label>
+              <textare name='".$field_namec."' id=".$field_namec." class='".$field_requiredc." span8' placeholder='".$placeholderc."'></textarea>           
+              <p class='help-block'>".$htc."</p>
+            </div><!--/span-->";
+		
+		}
+		else if ($field_typec=="select")		{
+		
+		$outstr .= "<div class='row-fluid'>
+            <div class='span4 bgcolor'>
+              <label>".$field_labelc."</label>
+              <select name='".$field_namec."' id='".$field_namec."' class='span8 ".$field_requiredc." input-mini' placeholder='".$placeholderc."'> ";
+              foreach (explode("\n",$this->input->post('select_optionsc')) as $kk => $vv){
+				$outstr .= "  <option value='".$vv."'>".$vv."</option>";
+              }
+              $outstr .= "</select>   
+              <p class='help-block'>".$htc."</p>
+             </div>";
+		
+	}		
+	else if ($field_typec=="select_multiple")		{
+		
+		$outstr .= "<div class='row-fluid'>
+            <div class='span4 bgcolor'>
+              <label>".$field_labelc."</label>
+              <select multiple name='".$field_namec."' id='".$field_namec."' class='span8 ".$field_requiredc." input-mini' placeholder='".$placeholderc."'>    ";
+              foreach (explode("\n",$this->input->post('select_optionsc')) as $kk => $vv){
+				$outstr .= "  <option value='".$vv."'>".$vv."</option>";
+              }
+              $outstr .= "</select>
+              <p class='help-block'>".$htc."</p>
+              </div>";
+		
+	}	else if ($field_typec=="date")		{
+		
+		$outstr .= "<div class='row-fluid'>
+            <div class='span4 bgcolor'>
+              <label>".$field_labelc."</label>
+              <input type='text' name='".$field_namec."' id='".$field_namec."' class='span8 ".$field_requiredc." input-mini' placeholder='".$placeholderc."'>    
+              <p class='help-block'>".$htc."</p>
+              </div> <script>
+  $(function() {
+    $( '#".$field_namec."' ).datepicker();
+  });
+  </script>";
+		
+	}	
+		else if ($field_typec=="file") {
+		$outstr .=	"<div class='row-fluid'>   
+            <div class='span4 lightblue'>
+              <label>".$field_labelc."</label>
+              <input type='file' name='".$field_namec."' id=".$field_namec." class='".$field_requiredc." input-file uniform_on span12' placeholder='".$placeholderc."'>           
+              <p class='help-block'>".$htc."</p>
+            </div><!--/span-->";
+		
+		}
+		
+		return $outstr;
+		
+	}
+	
+	function create_field_modal_pane_triple($num_cols) {
+		
+		
+		$outstr = "<div class='row'>
+				<div class='span5'> 
+					<form class='form-horizontal' accept-charset='UTF-8' action='#' id='field_form' method='POST'>";
+	
+		$outstr .= "<div class='control-group'>
+							<label class='control-label' for='inputName'>Name</label>
+							<div class='controls'>
+								<input type='text' name='field_namea' notEqual='#field_nameb' notEqual='#field_namec' class='required' id='field_namea' placeholder='required'/>
+							</div>
+						</div>
+						
+						<div class='control-group'>
+							<label class='control-label' for='inputEmail'>Label</label>
+							<div class='controls'>
+								<input type='text' name='field_labela' id='field_labela' class='required' placeholder='required'/>
+							</div>
+						</div>
+						 <div class='control-group'>
+							<label class='control-label' for='inputMessage'>Placeholder</label>
+							<div class='controls'>
+				<input type='text' class='required' id='field_placeholdera' name='field_placeholdera' placeholder='required'/>
+							</div>
+						</div> 
+						<div class='control-group'>
+							<label class='control-label' for='inputMessage'>Supporting Help Text</label>
+							<div class='controls'>
+				<input type='text' class='required' id='field_helptexta' name='field_helptexta' placeholder='required'/>
+							</div>
+						</div> 
+						<div class='control-group'>
+							<label class='control-label' for='inputMessage'>Required Field</label>
+							<div class='controls'>
+				<input type='checkbox' id='field_requireda' name='field_requireda'/>
+							</div>
+						</div> 
+			
+						<div class='control-group'>
+							<label class='control-label' for='inputMessage'>Select Field Type</label>
+							<div class='controls'>
+				<select title='Please select field type' name='field_typea' id='field_typea' class='required'>
+				
+				<option value='text'>Text</option>
+				<option value='radio'>Radio</option>
+				<option value='checkbox'>Checkbox</option>
+				<option value='select'>Select List</option>
+				<option value='select_multiple'>Select List Multiple</option>
+				<option value='date'>Date</option>
+				<option value='textarea'>TextArea</option>
+				<option value='file'>FileUpload</option>
+				</select>
+							</div>
+						</div> <div id='select_option_boxa'></div>";
+							$outstr .= "<div class='control-group'>
+							<label class='control-label' for='inputName'>Name</label>
+							<div class='controls'>
+								<input type='text' name='field_nameb' notEqual='#field_namea' notEqual='#field_namec' class='required' id='field_nameb' placeholder='required'/>
+							</div>
+						</div>
+						
+						
+						<div class='control-group'>
+							<label class='control-label' for='inputEmail'>Label</label>
+							<div class='controls'>
+								<input type='text' name='field_labelb' id='field_labelb' class='required' placeholder='required'/>
+							</div>
+						</div>
+						 <div class='control-group'>
+							<label class='control-label' for='inputMessage'>Placeholder</label>
+							<div class='controls'>
+				<input type='text' class='required' id='field_placeholderb' name='field_placeholderb' placeholder='required'/>
+							</div>
+						</div> 
+						<div class='control-group'>
+							<label class='control-label' for='inputMessage'>Supporting Help Text</label>
+							<div class='controls'>
+				<input type='text' class='required' id='field_helptextb' name='field_helptextb' placeholder='required'/>
+							</div>
+						</div> 
+						<div class='control-group'>
+							<label class='control-label' for='inputMessage'>Required Field</label>
+							<div class='controls'>
+				<input type='checkbox' id='field_requiredb' name='field_requiredb'/>
+							</div>
+						</div> 
+			
+						<div class='control-group'>
+							<label class='control-label' for='inputMessage'>Select Field Type</label>
+							<div class='controls'>
+				<select title='Please select field type' name='field_typeb' id='field_typeb' class='required'>
+				
+				<option value='text'>Text</option>
+				<option value='radio'>Radio</option>
+				<option value='checkbox'>Checkbox</option>
+				<option value='select'>Select List</option>
+				<option value='select_multiple'>Select List Multiple</option>
+				<option value='date'>Date</option>
+				<option value='textarea'>TextArea</option>
+				<option value='file'>FileUpload</option>
+				</select>
+							</div>
+						</div> <div id='select_option_boxb'></div>";
+							$outstr .= "<div class='control-group'>
+							<label class='control-label' for='inputName'>Name</label>
+							<div class='controls'>
+								<input type='text' name='field_namec' notEqual='#field_namea' notEqual='#field_nameb' class='required' id='field_namec' placeholder='required'/>
+							</div>
+						</div>
+						
+						<div class='control-group'>
+							<label class='control-label' for='inputEmail'>Label</label>
+							<div class='controls'>
+								<input type='text' name='field_labelc' id='field_labelc' class='required' placeholder='required'/>
+							</div>
+						</div>
+						 <div class='control-group'>
+							<label class='control-label' for='inputMessage'>Placeholder</label>
+							<div class='controls'>
+				<input type='text' class='required' id='field_placeholderc' name='field_placeholderc' placeholder='required'/>
+							</div>
+						</div> 
+						<div class='control-group'>
+							<label class='control-label' for='inputMessage'>Supporting Help Text</label>
+							<div class='controls'>
+				<input type='text' class='required' id='field_helptextc' name='field_helptextc' placeholder='required'/>
+							</div>
+						</div> 
+						<div class='control-group'>
+							<label class='control-label' for='inputMessage'>Required Field</label>
+							<div class='controls'>
+				<input type='checkbox' id='field_requiredc' name='field_requiredc'/>
+							</div>
+						</div> 
+			
+						<div class='control-group'>
+							<label class='control-label' for='inputMessage'>Select Field Type</label>
+							<div class='controls'>
+				<select title='Please select field type' name='field_typec' id='field_typec' class='required'>
+				
+				<option value='text'>Text</option>
+				<option value='radio'>Radio</option>
+				<option value='checkbox'>Checkbox</option>
+				<option value='select'>Select List</option>
+				<option value='select_multiple'>Select List Multiple</option>
+				<option value='date'>Date</option>
+				<option value='textarea'>TextArea</option>
+				<option value='file'>FileUpload</option>
+				</select>
+							</div>
+						</div>
+						<div id='select_option_boxc'></div>
+						<input type='hidden' name='num_cols' id='num_cols' value=".$num_cols."/> 
+									<div class='control-group'>
+							<div class='controls'>
+								<input type='submit' id='field_sub_btn' name='submit' class='btn btn-primary' value='Finish'/>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>";
+					$outstr .= "<script>
+			$(document).ready(function(){
+$('#rootwizard').bootstrapWizard('show','#tab2');
+});
+	$('#field_sub_btn').click ( function() {       
+	       if($('#field_form').valid()) {
+  
+		 $('#myModal3').modal('hide');	
+        
+             
+        $.ajax({
+            url     : '".site_url('admin/submit_field_form')."',
+            type    : 'POST',
+            dataType: 'html',
+            data    : $('#field_form').serialize(),
+            success : function( data ) {
+    
+	$('#build').append(data);
+	  
+                
+            },
+            error   : function( xhr, err ) {
+                         alert('Error');     
+            }
+        });    
+	}
+        return false;
+    });
+
+  
+</script>";
+/*       $('#field_sub_btn').css('href','#myModal_fdback2');
+         $('#field_sub_btn').css('data-toggle','modal');
+         $('#myModal_fdback2').css('display','block');
+         $('#myModal_fdback2').modal('show');
+                               $('#close_fdback_modal2').click(function(){
+    $('#myModal_fdback2').modal('hide');
+})
+         * 
+  */
+$outstr .= "<script>
+	$('#field_typea').change ( function() {       
+
+	if ( ($(this).val()=='select') || ($(this).val()=='select_multiple')) {
+	//alert('selected');
+	 $.ajax({
+            url     : '".site_url('admin/populate_option_box/select_optionsa')."',
+            type    : 'POST',
+            dataType: 'html',
+            data    : $('#field_form').serialize(),
+            success : function( data ) {
+       
+$('#select_option_boxa').html(data);
+
+            },
+            error   : function( xhr, err ) {
+                         alert('Error');     
+            }
+        }); 
+		
+}
+else if (($(this).val()=='radio') || ($(this).val()=='checkbox')) {
+	 $.ajax({
+            url     : '".site_url('admin/populate_radiocheck_box/select_optionsa')."',
+            type    : 'POST',
+            dataType: 'html',
+            data    : $('#field_form').serialize(),
+            success : function( data ) {
+       
+$('#select_option_boxa').html(data);
+
+            },
+            error   : function( xhr, err ) {
+                         alert('Error');     
+            }
+        }); 
+	
+	
+	}
+	else { $('#select_option_boxa').html('');	}	
+    });
+    
+    
+</script>";
+$outstr .= "<script>
+	$('#field_typeb').change ( function() {       
+
+	if ( ($(this).val()=='select') || ($(this).val()=='select_multiple')) {
+	//alert('selected');
+	 $.ajax({
+            url     : '".site_url('admin/populate_option_box/select_optionsb')."',
+            type    : 'POST',
+            dataType: 'html',
+            data    : $('#field_form').serialize(),
+            success : function( data ) {
+       
+$('#select_option_boxb').html(data);
+
+            },
+            error   : function( xhr, err ) {
+                         alert('Error');     
+            }
+        }); 
+		
+}
+	else if (($(this).val()=='radio') || ($(this).val()=='checkbox')) {
+	 $.ajax({
+            url     : '".site_url('admin/populate_radiocheck_box/select_optionsb')."',
+            type    : 'POST',
+            dataType: 'html',
+            data    : $('#field_form').serialize(),
+            success : function( data ) {
+       
+$('#select_option_boxb').html(data);
+
+            },
+            error   : function( xhr, err ) {
+                         alert('Error');     
+            }
+        }); 
+	
+	
+	}
+	else { $('#select_option_boxb').html('');	}
+    });
+    
+    
+</script>";
+$outstr .= "<script>
+	$('#field_typec').change ( function() {       
+
+	if ( ($(this).val()=='select') || ($(this).val()=='select_multiple')) {
+	//alert('selected');
+	 $.ajax({
+            url     : '".site_url('admin/populate_option_box/select_optionsc')."',
+            type    : 'POST',
+            dataType: 'html',
+            data    : $('#field_form').serialize(),
+            success : function( data ) {
+       
+$('#select_option_boxc').html(data);
+
+            },
+            error   : function( xhr, err ) {
+                         alert('Error');     
+            }
+        }); 
+		
+}
+	else if (($(this).val()=='radio') || ($(this).val()=='checkbox')) {
+	 $.ajax({
+            url     : '".site_url('admin/populate_radiocheck_box/select_optionsc')."',
+            type    : 'POST',
+            dataType: 'html',
+            data    : $('#field_form').serialize(),
+            success : function( data ) {
+       
+$('#select_option_boxc').html(data);
+
+            },
+            error   : function( xhr, err ) {
+                         alert('Error');     
+            }
+        }); 
+	
+	
+	}
+	else { $('#select_option_boxc').html('');	}
+    });
+    
+    
+</script>";
+			return $outstr;
+	}
+	
+	function create_field_modal() {
+		
+		
+		$num_cols = $this->input->post('num_cols');
+		
+					// title='Please select field type'
+					if ($num_cols == 1) {
+	$outstr  ="";
+	$outstr .= $this->create_field_modal_pane_single('field_name','field_label','field_placeholder','field_helptext','field_required','field_type',1);
+	//$str = "";
+	// "\x3Ctextarea name=\'select_options\' id=\'select_options\' rows=\'5\'\x3E\x3C\x2Ftextarea\x3E";
+	$outstr .= "<script>
+	$('#field_type').change ( function() {       
+
+	if ( ($(this).val()=='select') || ($(this).val()=='select_multiple')) {
+	//alert('selected');
+	 $.ajax({
+            url     : '".site_url('admin/populate_option_box/select_options')."',
+            type    : 'POST',
+            dataType: 'html',
+            data    : $('#field_form').serialize(),
+            success : function( data ) {
+       
+$('#select_option_box').html(data);
+
+            },
+            error   : function( xhr, err ) {
+                         alert('Error');     
+            }
+        }); 
+		
+}
+else if (($(this).val()=='radio') || ($(this).val()=='checkbox')) {
+	 $.ajax({
+            url     : '".site_url('admin/populate_radiocheck_box/select_options')."',
+            type    : 'POST',
+            dataType: 'html',
+            data    : $('#field_form').serialize(),
+            success : function( data ) {
+       
+$('#select_option_box').html(data);
+
+            },
+            error   : function( xhr, err ) {
+                         alert('Error');     
+            }
+        }); 
+	
+	
+	}
+else if (($(this).val()=='grid')) {
+	 $.ajax({
+            url     : '".site_url('admin/prepare_grid_box/select_options')."',
+            type    : 'POST',
+            dataType: 'html',
+            data    : $('#field_form').serialize(),
+            success : function( data ) {
+       
+$('#select_option_box').html(data);
+
+            },
+            error   : function( xhr, err ) {
+                         alert('Error');     
+            }
+        }); 
+	
+	
+	}
+	else { $('#select_option_box').html('');	}
+    });
+    
+    
+</script>";
+	
+	
+	
+	
+	
+echo $outstr;	
+					}
+					else if ($num_cols == 2) {
+						$outstr  ="";
+	$outstr .= $this->create_field_modal_pane_double(2);					
+				echo $outstr;					
+				}
+					else if ($num_cols == 3) {
+			$outstr  ="";			
+	$outstr .= $this->create_field_modal_pane_triple(3);											
+									echo $outstr;
+				}
+		
+		
+	}
+	
+	function create_field_modal_pane_double($num_cols) {
+		$outstr = "<div class='row'>
+				<div class='span5'> 
+					<form class='form-horizontal' accept-charset='UTF-8' action='#' id='field_form' method='POST'>";
+	
+	
+								$outstr .= "<div class='control-group'>
+							<label class='control-label' for='inputName'>Name</label>
+							<div class='controls'>
+								<input type='text' name='field_namea' notEqual='#field_nameb' class='required' id='field_namea' placeholder='required'/>
+							</div>
+						</div>
+						
+						<div class='control-group'>
+							<label class='control-label' for='inputEmail'>Label</label>
+							<div class='controls'>
+								<input type='text' name='field_labela' id='field_labela' class='required' placeholder='required'/>
+							</div>
+						</div>
+						 <div class='control-group'>
+							<label class='control-label' for='inputMessage'>Placeholder</label>
+							<div class='controls'>
+				<input type='text' class='required' id='field_placeholdera' name='field_placeholdera' placeholder='required'/>
+							</div>
+						</div> 
+						<div class='control-group'>
+							<label class='control-label' for='inputMessage'>Supporting Help Text</label>
+							<div class='controls'>
+				<input type='text' class='required' id='field_helptexta' name='field_helptexta' placeholder='required'/>
+							</div>
+						</div> 
+						<div class='control-group'>
+							<label class='control-label' for='inputMessage'>Required Field</label>
+							<div class='controls'>
+				<input type='checkbox' id='field_requireda' name='field_requireda'/>
+							</div>
+						</div> 
+			
+						<div class='control-group'>
+							<label class='control-label' for='inputMessage'>Select Field Type</label>
+							<div class='controls'>
+				<select title='Please select field type' name='field_typea' id='field_typea' class='required'>
+				
+				<option value='text'>Text</option>
+				<option value='radio'>Radio</option>
+				<option value='checkbox'>Checkbox</option>
+				<option value='select'>Select List</option>
+				<option value='select_multiple'>Select List Multiple</option>
+				<option value='date'>Date</option>
+				<option value='textarea'>TextArea</option>
+				<option value='file'>FileUpload</option>
+				</select>
+				
+							</div>
+						</div> <div id='select_option_boxa'></div>";
+							$outstr .= "<div class='control-group'>
+							<label class='control-label' for='inputName'>Name</label>
+							<div class='controls'>
+								<input type='text' name='field_nameb' notEqual='#field_namea' class='required' id='field_nameb' placeholder='required'/>
+							</div>
+						</div>
+						
+						<div class='control-group'>
+							<label class='control-label' for='inputEmail'>Label</label>
+							<div class='controls'>
+								<input type='text' name='field_labelb' id='field_labelb' class='required' placeholder='required'/>
+							</div>
+						</div>
+						 <div class='control-group'>
+							<label class='control-label' for='inputMessage'>Placeholder</label>
+							<div class='controls'>
+				<input type='text' class='required' id='field_placeholderb' name='field_placeholderb' placeholder='required'/>
+							</div>
+						</div> 
+						<div class='control-group'>
+							<label class='control-label' for='inputMessage'>Supporting Help Text</label>
+							<div class='controls'>
+				<input type='text' class='required' id='field_helptextb' name='field_helptextb' placeholder='required'/>
+							</div>
+						</div> 
+						<div class='control-group'>
+							<label class='control-label' for='inputMessage'>Required Field</label>
+							<div class='controls'>
+				<input type='checkbox' id='field_requiredb' name='field_requiredb'/>
+							</div>
+						</div> 
+			
+						<div class='control-group'>
+							<label class='control-label' for='inputMessage'>Select Field Type</label>
+							<div class='controls'>
+				<select title='Please select field type' name='field_typeb' id='field_typeb' class='required'>
+				
+				<option value='text'>Text</option>
+				<option value='radio'>Radio</option>
+				<option value='checkbox'>Checkbox</option>
+				<option value='select'>Select List</option>
+				<option value='select_multiple'>Select List Multiple</option>
+				<option value='date'>Date</option>
+				<option value='textarea'>TextArea</option>
+				<option value='file'>FileUpload</option>
+				</select>
+							</div>
+						</div> <div id='select_option_boxb'></div>
+						<input type='hidden' name='num_cols' id='num_cols' value=".$num_cols."/> 
+									<div class='control-group'>
+							<div class='controls'>
+								<input type='submit' id='field_sub_btn' name='submit' class='btn btn-primary' value='Finish'/>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>";
+					$outstr .= "<script>
+			$(document).ready(function(){
+$('#rootwizard').bootstrapWizard('show','#tab2');
+});
+	$('#field_sub_btn').click ( function() {       
+	       if($('#field_form').valid()) {
+  
+		 $('#myModal3').modal('hide');	
+        
+              
+        $.ajax({
+            url     : '".site_url('admin/submit_field_form')."',
+            type    : 'POST',
+            dataType: 'html',
+            data    : $('#field_form').serialize(),
+            success : function( data ) {
+  
+	$('#build').append(data);
+	              
+            },
+            error   : function( xhr, err ) {
+                         alert('Error');     
+            }
+        });    
+	}
+        return false;
+    });
+
+  
+</script>";
+$outstr .= "<script>
+	$('#field_typea').change ( function() {       
+
+	if ( ($(this).val()=='select') || ($(this).val()=='select_multiple')) {
+	//alert('selected');
+	 $.ajax({
+            url     : '".site_url('admin/populate_option_box/select_optionsa')."',
+            type    : 'POST',
+            dataType: 'html',
+            data    : $('#field_form').serialize(),
+            success : function( data ) {
+       
+$('#select_option_boxa').html(data);
+
+            },
+            error   : function( xhr, err ) {
+                         alert('Error');     
+            }
+        }); 
+		
+} else if (($(this).val()=='radio') || ($(this).val()=='checkbox')) {
+	 $.ajax({
+            url     : '".site_url('admin/populate_radiocheck_box/select_optionsa')."',
+            type    : 'POST',
+            dataType: 'html',
+            data    : $('#field_form').serialize(),
+            success : function( data ) {
+       
+$('#select_option_boxa').html(data);
+
+            },
+            error   : function( xhr, err ) {
+                         alert('Error');     
+            }
+        }); 
+	
+	
+	} else $('#select_option_boxa').html('');
+	
+    });
+    
+    
+</script>";
+$outstr .= "<script>
+	$('#field_typeb').change ( function() {       
+
+	if ( ($(this).val()=='select') || ($(this).val()=='select_multiple')) {
+	//alert('selected');
+	 $.ajax({
+            url     : '".site_url('admin/populate_option_box/select_optionsb')."',
+            type    : 'POST',
+            dataType: 'html',
+            data    : $('#field_form').serialize(),
+            success : function( data ) {
+       
+$('#select_option_boxb').html(data);
+
+            },
+            error   : function( xhr, err ) {
+                         alert('Error');     
+            }
+        }); 
+		
+}
+else if (($(this).val()=='radio') || ($(this).val()=='checkbox')) {
+	 $.ajax({
+            url     : '".site_url('admin/populate_radiocheck_box/select_optionsb')."',
+            type    : 'POST',
+            dataType: 'html',
+            data    : $('#field_form').serialize(),
+            success : function( data ) {
+       
+$('#select_option_boxb').html(data);
+
+            },
+            error   : function( xhr, err ) {
+                         alert('Error');     
+            }
+        }); 
+	
+	
+	}
+	else $('#select_option_boxb').html('');
+	
+    });
+    
+    
+</script>";
+	return $outstr;
+		
+		
+	}
+	
+		
+	
+	
+
+
+function create_field_modal_pane_single($fdn,$fl,$pl,$ht,$rq,$ft,$num_cols) {
+		
+		$outstr = "<div class='row'>
+				<div class='span5'> 
+					<form class='form-horizontal' accept-charset='UTF-8' action='#' id='field_form' method='POST'>";
+	
+						$outstr .= "<div class='control-group'>
+							<label class='control-label' for='inputName'>Name</label>
+							<div class='controls'>
+								<input type='text' name='".$fdn."' class='required' id='".$fdn."' placeholder='required'/>
+							</div>
+						</div>
+						
+						<div class='control-group'>
+							<label class='control-label' for='inputEmail'>Label</label>
+							<div class='controls'>
+								<input type='text' name='".$fl."' id='".$fl."' class='required' placeholder='required'/>
+							</div>
+						</div>
+						 <div class='control-group'>
+							<label class='control-label' for='inputMessage'>Placeholder</label>
+							<div class='controls'>
+				<input type='text' class='required' id='".$pl."' name='".$pl."' placeholder='required'/>
+							</div>
+						</div> 
+						<div class='control-group'>
+							<label class='control-label' for='inputMessage'>Supporting Help Text</label>
+							<div class='controls'>
+				<input type='text' class='required' id='".$ht."' name='".$ht."' placeholder='required'/>
+							</div>
+						</div> 
+						<div class='control-group'>
+							<label class='control-label' for='inputMessage'>Required Field</label>
+							<div class='controls'>
+				<input type='checkbox' class='required' id='".$rq."' name='".$rq."'/>
+							</div>
+						</div> 
+						
+			<div class='control-group'>
+							<label class='control-label' for='inputMessage'>Select Field Type</label>
+							<div class='controls'>
+				<select name='".$ft."' id='".$ft."' class='required'>
+				
+				<option value='text'>Text</option>
+				<option value='radio'>Radio</option>
+				<option value='checkbox'>Checkbox</option>
+				<option value='select'>Select List</option>
+				<option value='select_multiple'>Select List Multiple</option>
+				<option value='date'>Date</option>
+				<option value='textarea'>TextArea</option>
+				<option value='file'>FileUpload</option>
+				<option value='grid'>Grid</option>
+				</select>
+							</div>
+							<div id='select_option_box'></div>
+						</div> 
+				
+						<input type='hidden' name='num_cols' id='num_cols' value=".$num_cols."/> 
+						
+						<div class='control-group'>
+							<div class='controls'>
+								<input type='submit' id='field_sub_btn' name='submit' class='btn btn-primary' value='Finish'/>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>";
+		$outstr .= "<script>
+			$(document).ready(function(){
+$('#rootwizard').bootstrapWizard('show','#tab2');
+});
+	$('#field_sub_btn').click ( function() {       
+	       if($('#field_form').valid()) {
+  
+		 $('#myModal3').modal('hide');	
+        
+            
+        $.ajax({
+            url     : '".site_url('admin/submit_field_form')."',
+            type    : 'POST',
+            dataType: 'html',
+            data    : $('#field_form').serialize(),
+            success : function( data ) {
+  
+
+	$('#build').append(data);
+	              
+            },
+            error   : function( xhr, err ) {
+                         alert('Error');     
+            }
+        });    
+	}
+        return false;
+    });
+
+  
+</script>";
+	
+		return $outstr;
+		
+		
+	}
+	
+		function create_single_column_textfield() {
+		
+		$label = $this->input->post('field_label');
+		$name = $this->input->post('field_name');
+		$id = $this->input->post('field_id');
+		$placeholder = $this->input->post('field_placeholder');
+		$required = $this->input->post('field_required');
+		
+		
+		echo "<div class='row-fluid'>
+            <div class='span12 bgcolor'>
+              <label>".$label."</label>
+              <input type='text' name='".$name."' id='".$id."' class='span12 ".$required." input-mini' placeholder='".$placeholder."'>    
+            </div>
+          </div>";
+
+		
+		
+	}
+
+function add_textfield() {
+		
+		
+		echo "<div class='row-fluid'>   
+            <div class='span2 lightblue'>
+              <label>Title</label>
+              <input type='text' class='span12' placeholder='Mr.'>           
+            </div><!--/span-->
+            <div class='span5 lightblue'>
+              <label>First Name</label>
+              <input type='text' class='span12' placeholder='Chee Kin'>    
+            </div><!--/span-->
+        
+            <div class='span5 lightblue'>
+              <label>Last Name</label>
+              <input type='text' class='span12' placeholder='Lim'>    
+            </div><!--/span-->
+          </div><!--/row-->";
+
+		
+		
+		
+	}
+	
+	function create_double_column_textfield() {
+		
+		$label = $this->input->post('field_label');
+		$name = $this->input->post('field_name');
+		$id = $this->input->post('field_id');
+		$placeholder = $this->input->post('field_placeholder');
+		if($this->input->post('field_required'))
+		$required = "required"; else $required = "";
+		
+		$label2 = $this->input->post('field_label2');
+		$name2 = $this->input->post('field_name2');
+		$id2 = $this->input->post('field_id2');
+		$placeholder2 = $this->input->post('field_placeholder2');
+		if($this->input->post('field_required2'))
+		$required2 = "required"; else $required2 = "";
+		
+		
+		          echo "<div class='row-fluid'>
+            <div class='span6 bgcolor'>
+              <label>".$label."</label>
+              <input type='text' name='".$name."' id='".$id."' class='span12 ".$required."' placeholder='".$placeholder."'>    
+            </div><!--/span-->
+            <div class='span6 bgcolor'>
+              <label>".$label2."</label>
+              <input type='text' name='".$name2."' id='".$id2."' class='span12 ".$required2."' placeholder='".$placeholder2."'>    
+            </div><!--/span-->
+          </div><!--/row-->";           
+
+		
+	}
+	
+	function add_db_column($field_type,$name) {
+		
+		//$this->db->set_dbprefix('dtbl');
+		$sql = "create table if not exists dtbl_".$this->session->userdata('my_form_name'). "  (id int not null auto_increment,key(id));";
+		$this->db->query($sql);
+		
+		if ($field_type=="textarea") {
+		$sql = "alter table dtbl_".$this->session->userdata('my_form_name')." add column ".$name. " text;";
+		}
+		else if ($field_type=="text" || $field_type=="radio" || $field_type=="checkbox" || $field_type=="select" || $field_type=="select_multiple") {
+			
+			$sql = "alter table dtbl_".$this->session->userdata('my_form_name')." add column ".$name. " varchar(255);";
+			
+		}
+		else if ($field_type=="grid") {
+			
+			$sql='select * from my_forms;';	
+			echo $this->input->post('header_0');
+			echo $this->input->post('header_1');
+			echo $this->input->post('field_type_1');
+			
+		}
+		else if ($field_type=="file") { 		
+		$sql = "alter table dtbl_".$this->session->userdata('my_form_name')." add column ".$name. " varchar(255);";
+			
+		}
+		else if ($field_type=="date") { 		
+		$sql = "alter table dtbl_".$this->session->userdata('my_form_name')." add column ".$name. " DATE;";
+			
+		}
+		$this->db->query($sql);
+		
+	}
+	function submit_field_form() {
+		
+		$num_cols  = $this->input->post('num_cols');
+		if ($num_cols==1) {
+		$label = $this->input->post('field_label');
+		$name = $this->input->post('field_name');
+		// $id = $this->input->postcreate table my_forms(id int not null auto_increment, form_name varchar(255), key(id));=('field_id');
+		$placeholder = $this->input->post('field_placeholder');
+		$field_type = $this->input->post('field_type');
+		if ($this->input->post('field_required'))
+		$required = "required"; else $required = "";
+		$ht = $this->input->post('field_helptext');
+		
+		$this->add_db_column($field_type,$name);
+		
+		echo $this->create_single_column_row($label,$name,$placeholder,$field_type,$required,$ht);
+	}
+		else if ($num_cols==2) {
+			
+		$field_labela = $this->input->post('field_labela');
+		$field_namea = $this->input->post('field_namea');
+		// $field_ida = $this->input->post('field_ida');
+		$placeholdera = $this->input->post('field_placeholdera');
+		$field_typea = $this->input->post('field_typea');
+		if ($this->input->post('field_requireda'))
+		$field_requireda = "required"; else $field_requireda = "";
+		$hta = $this->input->post('field_helptexta');
+		
+			$field_labelb = $this->input->post('field_labelb');
+		$field_nameb = $this->input->post('field_nameb');
+		// $field_idb = $this->input->post('field_idb');
+		$placeholderb = $this->input->post('field_placeholderb');
+		$field_typeb = $this->input->post('field_typeb');
+		if ($this->input->post('field_requiredb'))
+		$field_requiredb = "required"; else $field_requiredb = "";
+		$htb = $this->input->post('field_helptextb');
+		$this->add_db_column($field_typea,$field_namea);
+		$this->add_db_column($field_typeb,$field_nameb);
+		echo $this->create_double_column_row($field_labela,$field_namea,$placeholdera,$field_typea,$field_requireda,$hta,$field_labelb,$field_nameb,$placeholderb,$field_typeb,$field_requiredb,$htb);	
+		
+		}
+		
+		
+		else if ($num_cols==3) {
+			$field_labela = $this->input->post('field_labela');
+		$field_namea = $this->input->post('field_namea');
+		// $field_ida = $this->input->post('field_ida');
+		$placeholdera = $this->input->post('field_placeholdera');
+		$field_typea = $this->input->post('field_typea');
+		if ($this->input->post('field_requireda'))
+		$field_requireda = "required"; else $field_requireda = "";
+		$hta = $this->input->post('field_helptexta');
+		
+			$field_labelb = $this->input->post('field_labelb');
+		$field_nameb = $this->input->post('field_nameb');
+		// $field_idb = $this->input->post('field_idb');
+		$placeholderb = $this->input->post('field_placeholderb');
+		$field_typeb = $this->input->post('field_typeb');
+		if ($this->input->post('field_requiredb'))
+		$field_requiredb = "required"; else $field_requiredb = "";
+		$htb = $this->input->post('field_helptextb');
+			
+		$field_labelc = $this->input->post('field_labelc');
+		$field_namec = $this->input->post('field_namec');
+		// $field_idc = $this->input->post('field_idc');
+		$placeholderc = $this->input->post('field_placeholderc');
+		$field_typec = $this->input->post('field_typec');
+		if ($this->input->post('field_requiredc'))
+		$field_requiredc = "required"; else $field_requiredc = "";
+			$htc = $this->input->post('field_helptextc');
+			$this->add_db_column($field_typea,$field_namea);
+			$this->add_db_column($field_typeb,$field_nameb);
+			$this->add_db_column($field_typec,$field_namec);
+		echo $this->create_triple_column_row($field_labela,$field_namea,$placeholdera,$field_typea,$field_requireda,$hta,$field_labelb,$field_nameb,$placeholderb,$field_typeb,$field_requiredb,$htb,$field_labelc,$field_namec,$placeholderc,$field_typec,$field_requiredc,$htc);	
+			
+			
+			
+			
+		}
+		
+		
+		
+		
+		
+	}
+	

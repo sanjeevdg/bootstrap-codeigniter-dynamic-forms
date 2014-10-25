@@ -1,0 +1,442 @@
+function add_tf_field() {
+	
+	$fnm = $this->input->post('form_name');
+	
+	$mf = $this->forms_model->get_form_by_name($fnm);
+	$oldftxt = trim($mf->form_text);
+	
+	$rs = random_string('alnum',8);
+	$myw = intval($this->input->post('tf_col_width'));
+	$name = 'txt_'.$rs;
+	$label = $this->input->post('tf_label');
+	$placeholder = $this->input->post('tf_placeholder');
+	$ht = $this->input->post('tf_helptext');
+	$required = $this->input->post('tf_required');
+	
+		if ($required) $required ="required" ; else $required ="";
+		if (strlen($required)>1) $chk = "true"; else $chk="false";
+		
+if (!($myw && $label)) {
+	
+	$str = "<div class='alert alert-info' id='my_alert_div'>
+							<button type='button' class='close' data-dismiss='alert'>x</button>
+							<strong>Request lost.</strong> Please try again.
+						</div><script> $('#my_alert_div').fadeOut(6000); </script>";
+		
+		$this->session->set_flashdata('message',$str);
+		redirect(site_url('create_form/edit_form/'.$mf->id));				
+        
+	}
+
+		
+		//$this->session->userdata('my_form_name')
+		if (!$this->db->field_exists($name, 'dtbl_'.$fnm)) {
+			$this->forms_model->add_varchar_field($required,$name,$fnm);
+	
+	$outstr = $this->make_textfield_xhtml($myw, $rs, $name, $label, $ht, $required, $chk, $fnm, $placeholder);
+	
+        if ($myw==12) $outstr .= "</div>";
+        
+        $newftxt = $oldftxt."".$outstr;
+        
+        $dtu = array (
+			'form_text' => $newftxt
+					);
+		$this->db->where('id',$mf->id);			
+		$this->db->update('my_forms',$dtu);			
+		$str = "<div class='alert alert-success' id='my_alert_div'>
+				<button type='button' class='close' data-dismiss='alert'>x</button>
+				<strong>Textfield element </strong> added.
+				</div><script> $('#my_alert_div').fadeOut(3000); </script>";
+		$this->session->set_flashdata('message',$str);
+		redirect(site_url('create_form/edit_form/'.$mf->id));
+}
+else {
+		$this->throw_field_exists_error();
+	}
+	
+}
+
+
+function add_cbx_field() {
+	
+	$fnm = $this->input->post('form_name');
+	$mf = $this->forms_model->get_form_by_name($fnm);
+	$oldftxt = trim($mf->form_text);
+	
+	$rs = random_string('alnum',8);
+	$myw = intval($this->input->post('cbx_col_width'));
+	$name = 'cbx_'.$rs;
+	$label = $this->input->post('cbx_label');
+	$ht = $this->input->post('cbx_helptext');
+	$required = $this->input->post('cbx_required');
+		if ($required) $required ="required" ; else $required ="";
+		if (strlen($required)>1) $chk = "true"; else $chk="false";	
+		$cbx_options = '';
+		
+if (!($myw && $label && $this->input->post('cbx_options'))) {
+	
+	$str = "<div class='alert alert-info' id='my_alert_div'>
+							<button type='button' class='close' data-dismiss='alert'>x</button>
+							<strong>Request lost.</strong> Please try again.
+						</div><script> $('#my_alert_div').fadeOut(6000); </script>";
+		
+		$this->session->set_flashdata('message',$str);
+		redirect(site_url('create_form/edit_form/'.$mf->id));				
+        
+	}
+
+		if (!$this->db->field_exists($name, 'dtbl_'.$fnm)) {
+	$this->forms_model->add_varchar_field($required,$name,$fnm);
+			// myw rs name label ht required chk fnm _options placeholder 
+			
+	$outstr = $this->make_checkbox_xhtml($myw,$rs, $name, $label, $ht, $required, $chk, $fnm, $cbx_options);
+	
+	          if ($myw==12) $outstr .= "</div>";
+	    
+	    $newftxt = $oldftxt."".$outstr;
+        $dtu = array (
+			'form_text' => $newftxt
+					);
+		$this->db->where('id',$mf->id);			
+		$this->db->update('my_forms',$dtu);			
+		$str = "<div class='alert alert-success' id='my_alert_div'>
+							<button type='button' class='close' data-dismiss='alert'>x</button>
+							<strong>Checkbox </strong>element added.
+						</div><script> $('#my_alert_div').fadeOut(3000); </script>";
+		$this->session->set_flashdata('message',$str);
+		redirect(site_url('create_form/edit_form/'.$mf->id));
+}
+else {
+	$this->throw_field_exists_error();
+	}
+}
+
+
+function add_rdo_field() {
+	$fnm = $this->input->post('form_name');
+	$mf = $this->forms_model->get_form_by_name($fnm);
+	$oldftxt = $mf->form_text;
+	
+        
+		$rs = random_string('alnum',8);
+	$myw = intval($this->input->post('rdo_col_width'));
+	$name = 'rdo_'.$rs;
+	// $this->input->post('rdo_name');
+	$label = $this->input->post('rdo_label');
+	$ht = $this->input->post('rdo_helptext');
+	$required = $this->input->post('rdo_required');
+		if ($required) $required ="required" ; else $required ="";
+		if (strlen($required)>1) $chk = "true"; else $chk="false";	
+		
+if (!($myw && $label && $this->input->post('rdo_options'))) {
+	
+	$str = "<div class='alert alert-info' id='my_alert_div'>
+							<button type='button' class='close' data-dismiss='alert'>x</button>
+							<strong>Request lost.</strong> Please try again.
+						</div><script> $('#my_alert_div').fadeOut(6000); </script>";
+		
+		$this->session->set_flashdata('message',$str);
+		redirect(site_url('create_form/edit_form/'.$mf->id));				
+        
+	}
+
+		if (!$this->db->field_exists($name, 'dtbl_'.$fnm)) {
+			$this->forms_model->add_varchar_field($required,$name,$fnm);
+			
+			$rdo_options = '';
+	$outstr = $this->make_radio_xhtml($myw,$rs, $name, $label, $ht, $required, $chk, $fnm, $rdo_options);
+			
+			
+            if ($myw==12) $outstr .= "</div>";
+            
+	
+        $newftxt = $oldftxt."".$outstr;
+        $dtu = array (
+			'form_text' => $newftxt
+					);
+		$this->db->where('id',$mf->id);			
+		$this->db->update('my_forms',$dtu);			
+		$str = "<div class='alert alert-success' id='my_alert_div'>
+							<button type='button' class='close' data-dismiss='alert'>x</button>
+							<strong>Radio </strong>element added.
+						</div><script> $('#my_alert_div').fadeOut(3000); </script>";
+		$this->session->set_flashdata('message',$str);
+		redirect(site_url('create_form/edit_form/'.$mf->id));
+}
+else {	
+	$this->throw_field_exists_error();
+	}
+}
+
+
+function add_ta_field() {
+	$fnm = $this->input->post('form_name');
+	$mf = $this->forms_model->get_form_by_name($fnm);
+	$oldftxt = $mf->form_text;
+	
+	$rs = random_string('alnum',8);
+	$myw = intval($this->input->post('ta_col_width'));
+	$name = 'txa_'.$rs;
+	// $this->input->post('ta_name');
+	$label = $this->input->post('ta_label');
+	$ht = $this->input->post('ta_helptext');
+	$required = $this->input->post('ta_required');
+		if ($required) $required ="required" ; else $required ="";
+		if (strlen($required)>1) $chk = "true"; else $chk="false";	
+		if (!($myw && $label)) {
+	
+	$str = "<div class='alert alert-info' id='my_alert_div'>
+							<button type='button' class='close' data-dismiss='alert'>x</button>
+							<strong>Request lost.</strong> Please try again.
+						</div><script> $('#my_alert_div').fadeOut(6000); </script>";
+		
+		$this->session->set_flashdata('message',$str);
+		redirect(site_url('create_form/edit_form/'.$mf->id));				
+        
+	}
+
+
+		if (!$this->db->field_exists($name, 'dtbl_'.$fnm)) {
+			$this->forms_model->add_text_field($required,$name,$fnm);
+			
+	$outstr = $this->make_textarea_xhtml($myw,$rs, $name, $label, $ht, $required, $chk, $fnm);
+			
+			
+  
+              if ($myw==1) $outstr .= "</div>";
+              
+        $newftxt = $oldftxt."".$outstr;
+        $dtu = array (
+			'form_text' => $newftxt
+					);
+		$this->db->where('id',$mf->id);			
+		$this->db->update('my_forms',$dtu);			
+		$str = "<div class='alert alert-success' id='my_alert_div'>
+							<button type='button' class='close' data-dismiss='alert'>x</button>
+							<strong>Textarea </strong>element added.
+						</div><script> $('#my_alert_div').fadeOut(3000); </script>";
+		$this->session->set_flashdata('message',$str);
+		redirect(site_url('create_form/edit_form/'.$mf->id));
+		}
+else {	
+	$this->throw_field_exists_error();
+	}
+}
+
+
+function add_sl_field() {
+	$fnm = $this->input->post('form_name');
+	$mf = $this->forms_model->get_form_by_name($fnm);
+	$oldftxt = $mf->form_text;
+	
+	$rs = random_string('alnum',8);
+	$myw = intval($this->input->post('sl_col_width'));
+	$name = 'sel_'.$rs;
+	//$this->input->post('sl_name');
+	$label = $this->input->post('sl_label');
+	$ht = $this->input->post('sl_helptext');
+	$required = $this->input->post('sl_required');
+		if ($required) $required ="required" ; else $required ="";
+	if (strlen($required)>1) $chk = "true"; else $chk="false";	
+
+	if (!($myw && $label && $this->input->post('sl_options'))) {
+	
+	$str = "<div class='alert alert-info' id='my_alert_div'>
+							<button type='button' class='close' data-dismiss='alert'>x</button>
+							<strong>Request lost.</strong> Please try again.
+						</div><script> $('#my_alert_div').fadeOut(6000); </script>";
+		
+		$this->session->set_flashdata('message',$str);
+		redirect(site_url('create_form/edit_form/'.$mf->id));				
+        
+	}
+
+
+		if (!$this->db->field_exists($name, 'dtbl_'.$fnm)) {
+			$this->forms_model->add_varchar_field($required,$name,$fnm);
+	$sl_options = '';
+	$outstr = $this->make_select_xhtml($myw,$rs, $name, $label, $ht, $required, $chk, $fnm,$sl_options);
+			
+                if ($myw==1) $outstr .= "</div>";
+		
+        $newftxt = $oldftxt."".$outstr;
+        $dtu = array (
+			'form_text' => $newftxt
+					);
+		$this->db->where('id',$mf->id);			
+		$this->db->update('my_forms',$dtu);			
+		$str = "<div class='alert alert-success' id='my_alert_div'>
+							<button type='button' class='close' data-dismiss='alert'>x</button>
+							<strong>Select </strong>element added.
+						</div><script> $('#my_alert_div').fadeOut(3000); </script>";
+		$this->session->set_flashdata('message',$str);
+		redirect(site_url('create_form/edit_form/'.$mf->id));
+}
+else {
+		$this->throw_field_exists_error();
+	}
+}
+
+
+function add_slm_field() {
+	$fnm = $this->input->post('form_name');
+	$mf = $this->forms_model->get_form_by_name($fnm);
+	$oldftxt = $mf->form_text;
+	
+	$rs = random_string('alnum',8);
+	$myw = intval($this->input->post('slm_col_width'));
+	$name = 'slm_'.$rs;
+	//$this->input->post('slm_name');
+	$label = $this->input->post('slm_label');
+	$ht = $this->input->post('slm_helptext');
+	$required = $this->input->post('slm_required');
+	if ($required) $required ="required" ; else $required ="";
+	if (strlen($required)>1) $chk = "true"; else $chk="false";	
+	$slm_options = '';
+	
+	if (!($myw && $label && $this->input->post('slm_options'))) {
+	
+	$str = "<div class='alert alert-info' id='my_alert_div'>
+							<button type='button' class='close' data-dismiss='alert'>x</button>
+							<strong>Request lost.</strong> Please try again.
+						</div><script> $('#my_alert_div').fadeOut(6000); </script>";
+		
+		$this->session->set_flashdata('message',$str);
+		redirect(site_url('create_form/edit_form/'.$mf->id));				
+        
+	}
+
+
+	if (!$this->db->field_exists($name, 'dtbl_'.$fnm)) {
+		$this->forms_model->add_varchar_field($required,$name,$fnm);
+		
+		$outstr = $this->make_select_multiple_xhtml($myw,$rs, $name, $label, $ht, $required, $chk, $fnm,$slm_options);
+		
+		
+		
+		
+            if ($myw==1) $outstr .= "</div>";
+            
+        $newftxt = $oldftxt."".$outstr;
+        $dtu = array (
+			'form_text' => $newftxt
+					);
+		$this->db->where('id',$mf->id);			
+		$this->db->update('my_forms',$dtu);			
+		$str = "<div class='alert alert-success' id='my_alert_div'>
+							<button type='button' class='close' data-dismiss='alert'>x</button>
+							<strong>Select multiple </strong>element added.
+						</div><script> $('#my_alert_div').fadeOut(3000); </script>";
+		$this->session->set_flashdata('message',$str);
+		redirect(site_url('create_form/edit_form/'.$mf->id));
+}
+else {
+	$this->throw_field_exists_error();
+	}
+}
+
+
+function add_dt_field() {
+	$fnm = $this->input->post('form_name');
+	$mf = $this->forms_model->get_form_by_name($fnm);
+	$oldftxt = $mf->form_text;
+	
+	$rs = random_string('alnum', 8);
+	$myw = intval($this->input->post('dt_col_width'));
+	$name = 'dte_'.$rs;
+	//$this->input->post('dt_name');
+	$label = $this->input->post('dt_label');
+	$ht = $this->input->post('dt_helptext');
+	$required = $this->input->post('dt_required');
+	if ($required) $required ="required" ; else $required ="";
+	if (strlen($required)>1) $chk = "true"; else $chk="false";	
+	
+	if (!($myw && $label)) {
+	
+	$str = "<div class='alert alert-info' id='my_alert_div'>
+							<button type='button' class='close' data-dismiss='alert'>x</button>
+							<strong>Request lost.</strong> Please try again.
+						</div><script> $('#my_alert_div').fadeOut(6000); </script>";
+		
+		$this->session->set_flashdata('message',$str);
+		redirect(site_url('create_form/edit_form/'.$mf->id));				
+        
+	}
+	
+	if (!$this->db->field_exists($name, 'dtbl_'.$fnm)) {
+		$this->forms_model->add_date_field($required,$name,$fnm);
+		
+		$outstr = $this->make_dt_xhtml($myw,$rs, $name, $label, $ht, $required, $chk, $fnm);
+		
+        $newftxt = $oldftxt."".$outstr;
+        
+        $dtu = array (
+			'form_text' => $newftxt
+					);
+		$this->db->where('id',$mf->id);			
+		$this->db->update('my_forms',$dtu);			
+		$str = "<div class='alert alert-success' id='my_alert_div'>
+							<button type='button' class='close' data-dismiss='alert'>x</button>
+							<strong>Date </strong>element added.
+						</div><script> $('#my_alert_div').fadeOut(3000); </script>";
+		$this->session->set_flashdata('message',$str);
+		redirect(site_url('create_form/edit_form/'.$mf->id));
+	}
+else {
+	$this->throw_field_exists_error();
+	}
+}
+
+
+function add_fu_field() {
+	$fnm = $this->input->post('form_name');
+	$mf = $this->forms_model->get_form_by_name($fnm);
+	$oldftxt = $mf->form_text;
+	
+	$rs = random_string('alnum',8);
+	$myw = intval($this->input->post('fu_col_width'));
+	$name = 'fup_'.$rs;
+	//$this->input->post('fu_name');
+	$label = $this->input->post('fu_label');
+	$ht = $this->input->post('fu_helptext');
+	$required = $this->input->post('fu_required');
+	if ($required) $required ="required" ; else $required ="";
+	if (strlen($required)>1) $chk = "true"; else $chk="false";	
+	
+	if (!($myw && $label)) {
+	
+	$str = "<div class='alert alert-info' id='my_alert_div'>
+							<button type='button' class='close' data-dismiss='alert'>x</button>
+							<strong>Request lost.</strong> Please try again.
+						</div><script> $('#my_alert_div').fadeOut(6000); </script>";
+		
+		$this->session->set_flashdata('message',$str);
+		redirect(site_url('create_form/edit_form/'.$mf->id));				
+        
+	}
+	
+	if (!$this->db->field_exists($name, 'dtbl_'.$fnm)) {
+		$this->forms_model->add_varchar_field($required,$name,$fnm);
+	
+	$outstr = $this->make_fu_xhtml($myw,$rs, $name, $label, $ht, $required, $chk, $fnm);
+            if ($myw==12) $outstr .= "</div>";
+            
+        $newftxt = $oldftxt."".$outstr;
+        $dtu = array (
+			'form_text' => $newftxt
+					);
+		$this->db->where('id',$mf->id);			
+		$this->db->update('my_forms',$dtu);			
+		$str = "<div class='alert alert-success' id='my_alert_div'>
+							<button type='button' class='close' data-dismiss='alert'>x</button>
+							<strong>Fileupload </strong>element added.
+						</div><script> $('#my_alert_div').fadeOut(3000); </script>";
+		$this->session->set_flashdata('message',$str);
+		redirect(site_url('create_form/edit_form/'.$mf->id));
+	}
+else {
+		$this->throw_field_exists_error();
+	}
+}
+

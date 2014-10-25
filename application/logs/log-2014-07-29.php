@@ -1,0 +1,45 @@
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed'); ?>
+
+ERROR - 2014-07-29 15:18:59 --> Severity: Notice  --> Trying to get property of non-object /var/www/html/xeroweb/application/views/admin/my_forms.php 74
+ERROR - 2014-07-29 15:18:59 --> Severity: Notice  --> Trying to get property of non-object /var/www/html/xeroweb/application/views/admin/my_forms.php 85
+ERROR - 2014-07-29 15:18:59 --> Severity: Notice  --> Trying to get property of non-object /var/www/html/xeroweb/application/views/admin/my_forms.php 89
+ERROR - 2014-07-29 15:18:59 --> Severity: Notice  --> Trying to get property of non-object /var/www/html/xeroweb/application/views/admin/my_forms.php 74
+ERROR - 2014-07-29 15:18:59 --> Severity: Notice  --> Trying to get property of non-object /var/www/html/xeroweb/application/views/admin/my_forms.php 85
+ERROR - 2014-07-29 15:18:59 --> Severity: Notice  --> Trying to get property of non-object /var/www/html/xeroweb/application/views/admin/my_forms.php 89
+ERROR - 2014-07-29 15:18:59 --> Severity: Notice  --> Trying to get property of non-object /var/www/html/xeroweb/application/views/admin/my_forms.php 74
+ERROR - 2014-07-29 15:18:59 --> Severity: Notice  --> Trying to get property of non-object /var/www/html/xeroweb/application/views/admin/my_forms.php 85
+ERROR - 2014-07-29 15:18:59 --> Severity: Notice  --> Trying to get property of non-object /var/www/html/xeroweb/application/views/admin/my_forms.php 89
+ERROR - 2014-07-29 15:18:59 --> Severity: Notice  --> Trying to get property of non-object /var/www/html/xeroweb/application/views/admin/my_forms.php 74
+ERROR - 2014-07-29 15:18:59 --> Severity: Notice  --> Trying to get property of non-object /var/www/html/xeroweb/application/views/admin/my_forms.php 85
+ERROR - 2014-07-29 15:18:59 --> Severity: Notice  --> Trying to get property of non-object /var/www/html/xeroweb/application/views/admin/my_forms.php 89
+ERROR - 2014-07-29 15:19:31 --> Severity: Notice  --> Trying to get property of non-object /var/www/html/xeroweb/application/views/admin/my_forms.php 74
+ERROR - 2014-07-29 15:19:31 --> Severity: Notice  --> Trying to get property of non-object /var/www/html/xeroweb/application/views/admin/my_forms.php 85
+ERROR - 2014-07-29 15:19:31 --> Severity: Notice  --> Trying to get property of non-object /var/www/html/xeroweb/application/views/admin/my_forms.php 89
+ERROR - 2014-07-29 15:19:31 --> Severity: Notice  --> Trying to get property of non-object /var/www/html/xeroweb/application/views/admin/my_forms.php 74
+ERROR - 2014-07-29 15:19:31 --> Severity: Notice  --> Trying to get property of non-object /var/www/html/xeroweb/application/views/admin/my_forms.php 85
+ERROR - 2014-07-29 15:19:31 --> Severity: Notice  --> Trying to get property of non-object /var/www/html/xeroweb/application/views/admin/my_forms.php 89
+ERROR - 2014-07-29 15:19:31 --> Severity: Notice  --> Trying to get property of non-object /var/www/html/xeroweb/application/views/admin/my_forms.php 74
+ERROR - 2014-07-29 15:19:31 --> Severity: Notice  --> Trying to get property of non-object /var/www/html/xeroweb/application/views/admin/my_forms.php 85
+ERROR - 2014-07-29 15:19:31 --> Severity: Notice  --> Trying to get property of non-object /var/www/html/xeroweb/application/views/admin/my_forms.php 89
+ERROR - 2014-07-29 15:19:31 --> Severity: Notice  --> Trying to get property of non-object /var/www/html/xeroweb/application/views/admin/my_forms.php 74
+ERROR - 2014-07-29 15:19:31 --> Severity: Notice  --> Trying to get property of non-object /var/www/html/xeroweb/application/views/admin/my_forms.php 85
+ERROR - 2014-07-29 15:19:31 --> Severity: Notice  --> Trying to get property of non-object /var/www/html/xeroweb/application/views/admin/my_forms.php 89
+ERROR - 2014-07-29 15:19:34 --> Severity: Notice  --> Trying to get property of non-object /var/www/html/xeroweb/application/views/admin/my_forms.php 74
+ERROR - 2014-07-29 15:19:34 --> Severity: Notice  --> Trying to get property of non-object /var/www/html/xeroweb/application/views/admin/my_forms.php 85
+ERROR - 2014-07-29 15:19:34 --> Severity: Notice  --> Trying to get property of non-object /var/www/html/xeroweb/application/views/admin/my_forms.php 89
+ERROR - 2014-07-29 15:19:34 --> Severity: Notice  --> Trying to get property of non-object /var/www/html/xeroweb/application/views/admin/my_forms.php 74
+ERROR - 2014-07-29 15:19:34 --> Severity: Notice  --> Trying to get property of non-object /var/www/html/xeroweb/application/views/admin/my_forms.php 85
+ERROR - 2014-07-29 15:19:34 --> Severity: Notice  --> Trying to get property of non-object /var/www/html/xeroweb/application/views/admin/my_forms.php 89
+ERROR - 2014-07-29 15:19:34 --> Severity: Notice  --> Trying to get property of non-object /var/www/html/xeroweb/application/views/admin/my_forms.php 74
+ERROR - 2014-07-29 15:19:34 --> Severity: Notice  --> Trying to get property of non-object /var/www/html/xeroweb/application/views/admin/my_forms.php 85
+ERROR - 2014-07-29 15:19:34 --> Severity: Notice  --> Trying to get property of non-object /var/www/html/xeroweb/application/views/admin/my_forms.php 89
+ERROR - 2014-07-29 15:19:36 --> Severity: Notice  --> Trying to get property of non-object /var/www/html/xeroweb/application/views/admin/my_forms.php 74
+ERROR - 2014-07-29 15:19:36 --> Severity: Notice  --> Trying to get property of non-object /var/www/html/xeroweb/application/views/admin/my_forms.php 85
+ERROR - 2014-07-29 15:19:36 --> Severity: Notice  --> Trying to get property of non-object /var/www/html/xeroweb/application/views/admin/my_forms.php 89
+ERROR - 2014-07-29 15:19:36 --> Severity: Notice  --> Trying to get property of non-object /var/www/html/xeroweb/application/views/admin/my_forms.php 74
+ERROR - 2014-07-29 15:19:36 --> Severity: Notice  --> Trying to get property of non-object /var/www/html/xeroweb/application/views/admin/my_forms.php 85
+ERROR - 2014-07-29 15:19:36 --> Severity: Notice  --> Trying to get property of non-object /var/www/html/xeroweb/application/views/admin/my_forms.php 89
+ERROR - 2014-07-29 15:19:37 --> Severity: Notice  --> Trying to get property of non-object /var/www/html/xeroweb/application/views/admin/my_forms.php 74
+ERROR - 2014-07-29 15:19:37 --> Severity: Notice  --> Trying to get property of non-object /var/www/html/xeroweb/application/views/admin/my_forms.php 85
+ERROR - 2014-07-29 15:19:37 --> Severity: Notice  --> Trying to get property of non-object /var/www/html/xeroweb/application/views/admin/my_forms.php 89
+ERROR - 2014-07-29 15:22:38 --> Severity: Notice  --> Undefined variable: mf /var/www/html/xeroweb/application/models/forms_model.php 113

@@ -1,0 +1,403 @@
+function add_grid_field() {
+	$fnm = $this->input->post('form_name');
+	$mf = $this->forms_model->get_form_by_name($fnm);
+	$oldftxt = $mf->form_text;
+	
+		$rs = random_string('alnum', 8);
+	
+	
+		$ngc = intval($this->input->post('gd_num_cols'));
+		$ngr = intval($this->input->post('gd_num_rows'));
+		$tbln = 'dtbl_'.$fnm;
+		$coln = "grid_".$rs;
+	if (!$this->db->field_exists($coln,$tbln)) {
+		$this->forms_model->add_grid_field_col($coln,$fnm);
+		$outstr ="";
+		if ($ngc==12) $mysa= '12';
+                  	else if ($ngc==11) $mysa= '12';
+                  	else if ($ngc==10) $mysa= '12';
+                  	else if ($ngc==9) $mysa= '12';
+                  	else if ($ngc==8) $mysa= '12';
+                  	else if ($ngc==7) $mysa= '12';
+                  	else if ($ngc==6) $mysa= '12';
+                  	else if ($ngc==5) $mysa= '10';
+                  	else if ($ngc==4) $mysa= '8';
+                  	else if ($ngc==3) $mysa= '6';
+                  	else if ($ngc==2) $mysa= '4';
+                  	else if ($ngc==1) $mysa= '3';
+                  	
+                  	/*<div class='box-header well' data-original-title>
+						<h2><i class='icon-th'></i>InfoBox</h2>
+					
+					
+					
+					</div> */
+			$outstr .= "<div class='box span".$mysa."' id='".$rs."' style='margin-left:0px;padding-left:3px;padding-right:3px;padding-top:1px;padding-bottom:1px;'>
+					
+						<div class='box-icon' style='float:right;'>
+							<a id='remove_grid_element_".$rs."' href='#'><img src='".base_url()."assets/img/cancel-on.png' width='10px' height='10px'/></a>
+						</div>
+						
+					
+					<div class='box-content well'>
+                  	<div class='row-fluid'>";
+                  	$outstr .= "<table class='table table-striped'>  
+        <thead>  
+          <tr>";  
+
+        $outstr .= "<input type='hidden' name='num_grid_cols' id='num_grid_cols' value='".$ngc."'>
+					 <input type='hidden' name='num_grid_rows' id='num_grid_rows' value='".$ngr."'>";
+		          	
+                  	// $mys = round(12/$ngc, 0, PHP_ROUND_HALF_DOWN);
+                  	
+                  	if ($ngc==12) $mys= '1';
+                  	else if ($ngc==11) $mys= '1';
+                  	else if ($ngc==10) $mys= '1';
+                  	else if ($ngc==9) $mys= '1';
+                  	else if ($ngc==8) $mys= '1';
+                  	else if ($ngc==7) $mys= '1';
+                  	else if ($ngc==6) $mys= '2';
+                  	else if ($ngc==5) $mys= '2';
+                  	else if ($ngc==4) $mys= '2';
+                  	else if ($ngc==3) $mys= '3';
+                  	else if ($ngc==2) $mys= '3';
+                  	else if ($ngc==1) $mys= '4';
+                  	
+                  	
+                  	
+            
+
+                  	$headers = array();
+        //          	$fieldtypes = array();
+          //        	$fieldoptions = array();
+                  	for ($i=0;$i<$ngc;$i++) {
+						if ($i==($ngc-1)) $mys2 = $mys-1;else $mys2 = $mys;
+					$outstr .="<th class='span".$mys2."'><label>".$this->input->post('header_'.$i)."</label>	</th>";
+					$headers[] = $this->input->post('header_'.$i);
+			//		$fieldtypes[] = $this->input->post('field_type_'.$i);
+			//		if ($this->input->post('select_options_'.$i)) {
+			//		$ser = explode("\n",trim($this->input->post('select_options_'.$i)));
+			//		$serv = implode("|",$ser);
+			//	}
+			//		else $serv = "nodata";
+			//		$fieldoptions[] = $serv;
+					
+						/*
+						 * if ($this->input->post('field_type_'.$i)=='textarea'){
+							$this->grid_add_text_field($i."_".$this->input->post('header_'.$i),$tbln);	
+						}
+						else if ($this->input->post('field_type_'.$i)=='date'){
+							$this->grid_add_date_field($i."_".$this->input->post('header_'.$i),$tbln);	
+						}
+						else {
+							$this->grid_add_varchar_field($i."_".$this->input->post('header_'.$i),$tbln);	
+						}
+						*/
+					$outstr .= "<input type='hidden' name='headers[]' value='".$this->input->post('header_'.$i)."'/>";	
+					}
+                  	
+                  $outstr .= "</tr>  </thead></div>   <tbody id='grid_body_".$rs."'>";
+                  for ($i=0;$i<$ngr;$i++) {
+$outstr .= "<tr class='row-fluid'>";
+						
+						
+							for ($k=0;$k<$ngc;$k++) {
+								
+						if ($this->input->post('field_type_'.$k)=='text'){
+							
+                  $outstr .= "<td class='span".$mys."'><input type='text' name='".$k."_".$this->input->post('header_'.$k)."_".$i."' id='".$k."_".$this->input->post('header_'.$k)."_".$i."' class='required alphanumeric span12 input-mini'/> </label></td>";
+                  
+					}
+					else if ($this->input->post('field_type_'.$k)=='radio') {
+						
+		// <div class='row-fluid'>
+		
+        $outstr .= "    <td class='span".($mys+1)." bgcolor'>";
+            
+              // <label>".$label."</label>";
+              //id='".$k."_".$this->input->post('header_'.$k)."_".$i."'
+              foreach (explode("\n",trim($this->input->post('select_options_'.$k))) as $kk => $vv){
+              $outstr .= "<label class='radio inline'><input type='radio' name='".$k."_".$this->input->post('header_'.$k)."_".$i."' value='".$vv."' class='span12 input-mini'>";
+              $outstr .= $vv."</label>";
+		  }
+              
+              // $outstr .= "<p class='help-block'>".$ht."</p>
+                $outstr .= " </td>";
+						
+						
+					}
+		else if ($this->input->post('field_type_'.$k)=="checkbox")		{
+		
+		// <div class='row-fluid'>
+		//span12 
+        $outstr .= "    <td class='span".($mys+1)." bgcolor'>";
+              //<label>".$this->input->post('header_'.$k)."</label>";
+              //id='".$k."_".$this->input->post('header_'.$k)."_".$i."'
+              foreach (explode("\n",trim($this->input->post('select_options_'.$k))) as $kk => $vv){
+              $outstr .= "<label class='radio inline'><input type='checkbox' name='".$k."_".$this->input->post('header_'.$k)."_".$i."[]' value='".$vv."' class='span12 input-mini'>";    
+              $outstr .= $vv."</label>";
+              
+			}
+              //$outstr .= "<p class='help-block'>".$vv."</p>";
+              $outstr .= "</td>";
+		
+	}
+	else if ($this->input->post('field_type_'.$k)=="select")		{
+		
+		$outstr .= "<td class='span".$mys." bgcolor'>
+                   <select name='".$k."_".$this->input->post('header_'.$k)."_".$i."' id='".$k."_".$this->input->post('header_'.$k)."_".$i."' class='span12 input-mini'> ";
+              foreach (explode("\n",trim($this->input->post('select_options_'.$k))) as $kk => $vv){
+				$outstr .= "  <option value='".$vv."'>".$vv."</option>";
+              }
+              $outstr .= "</select>   
+                            </td>";
+		
+	}		
+	else if ($this->input->post('field_type_'.$k)=="select_multiple")		{
+		//id='".$k."_".$this->input->post('header_'.$k)."_".$i."'
+		$outstr .= "<td class='span".$mys." bgcolor'>
+                       <select multiple name='".$k."_".$this->input->post('header_'.$k)."_".$i."[]' class='span12 input-mini'>    ";
+              foreach (explode("\n",trim($this->input->post('select_options_'.$k))) as $kk => $vv){
+				$outstr .= "  <option value='".$vv."'>".$vv."</option>";
+              }
+              $outstr .= "</select>
+                        </td>";
+		
+	}		
+	else if ($this->input->post('field_type_'.$k)=="date")		{
+		
+		$outstr .= "<td class='span".$mys." bgcolor'>
+                 <input type='text' name='".$k."_".$this->input->post('header_'.$k)."_".$i."' id='".$k."_".$this->input->post('header_'.$k)."_".$i."' class='span12 input-mini'>    
+                    <script>
+  $(function() {
+    $( '#".$k."_".$this->input->post('header_'.$k)."_".$i."' ).datepicker();
+  });
+  </script></td>";
+		
+	}		
+		else if ($this->input->post('field_type_'.$k)=="textarea")		{
+		
+		$outstr .= "<td class='span".$mys." bgcolor'>
+                            <textarea type='text' name='".$k."_".$this->input->post('header_'.$k)."_".$i."' id='".$k."_".$this->input->post('header_'.$k)."_".$i."' class='span12 input-mini'> </textarea>   
+              </td>";
+		
+	}	
+	else if ($this->input->post('field_type_'.$k)=="file")		{
+		
+		$outstr .= "<td class='span".$mys." bgcolor'>
+          
+              <input type='file' name='".$k."_".$this->input->post('header_'.$k)."_".$i."' id='".$k."_".$this->input->post('header_'.$k)."_".$i."' class='span12 input-file uniform_on'>    
+          
+            </td>";
+          
+		
+	}				
+				
+					}	
+	$outstr .="</tr>";
+							
+							
+							
+					 
+				}
+                  
+	$outstr .=  "</tbody></table><script>
+	
+		
+		$('#remove_grid_element_".$rs."').click(function (e) {
+		
+	e.preventDefault();
+	bootbox.confirm('Are you sure?', function(result) {
+if (result) {
+	window.location.assign('".site_url('create_form/remove_field/'.$rs.'/'.$coln.'/'.$fnm)."');
+}	else { bootbox.hideAll(); return false; }
+});
+		
+	});
+		$( '#".$rs."' ).draggable();
+		</script>";														
+	$outstr .= "</div>
+                  </div>                
+				</div>";
+	
+	
+	$this->load->helper('dom');
+	$gdxt = str_get_html($outstr);
+	$gdxt_snip = $gdxt->find('#grid_body_'.$rs,0);
+	//print_r($gdxt_snip);
+	if (empty($gdxt_snip) || trim($gdxt_snip->innertext())=="") {
+	
+	$str = "<div class='alert alert-info' id='my_alert_div'>
+							<button type='button' class='close' data-dismiss='alert'>x</button>
+							<strong>Request terminated  </strong>unexpectedly. Please try again.
+						</div><script> $('#my_alert_div').fadeOut(6000); </script>";
+        
+	}
+	else {
+		
+		$newftxt = $oldftxt."".$outstr;
+        $dtu = array (
+			'form_text' => $newftxt
+					);
+		$this->db->where('id',$mf->id);			
+		$this->db->update('my_forms',$dtu);			
+		$str = "<div class='alert alert-success' id='my_alert_div'>
+							<button type='button' class='close' data-dismiss='alert'>x</button>
+							<strong>Grid </strong>element added.
+						</div><script> $('#my_alert_div').fadeOut(3000); </script>";
+					}
+		$this->session->set_flashdata('message',$str);
+		redirect(site_url('create_form/edit_form/'.$mf->id));
+	}
+else {
+		$this->throw_field_exists_error();
+	}	
+}
+
+
+function add_handsontable_field() {
+	$fnm = $this->input->post('form_name');
+	$mf = $this->forms_model->get_form_by_name($fnm);
+	$oldftxt = $mf->form_text;
+	
+$rs = random_string('alnum', 8);
+	
+	
+		$ngc = intval($this->input->post('ht_num_cols'));
+		
+		$tbln = 'dtbl_'.$fnm;
+		$coln = "ht_gd_".$rs;
+	if (!$this->db->field_exists($coln,$tbln)) {
+		$this->forms_model->add_grid_field_col($coln,$fnm);
+		$outstr ="";
+		
+		
+$outstr .= "<div class='box span".($ngc+1)." well' id='".$rs."' style='padding-top:1px;padding-bottom:1px;'>
+						<div class='box-icon' style='float:right;margin-top:-30px;'>
+							<a id='remove_grid_element_".$rs."' href='#'>
+							<img src='".base_url()."assets/img/cancel-on.png' width='10px' height='10px'/></a>
+						</div>
+					
+					<div class='box-content'>";			
+	
+	
+	
+	
+$outstr .= "<div id='my_ht_".$rs."'></div>";
+
+$headers = array();
+                  	for ($i=0;$i<$ngc;$i++) {
+					
+					
+					$headers[] = $this->input->post('header_'.$i);
+					
+					}
+	
+	// print_r($headers);
+	
+	$outstr .= "<script>
+            
+            $('#my_ht_".$rs."').handsontable({
+              data: [],
+              startRows:3,
+              startCols:".$ngc.",
+              minSpareRows: 1,
+              colHeaders: ".json_encode($headers).",
+              columnSorting: false,
+              columns: [";
+                 	for ($i=0;$i<$ngc;$i++) {
+				
+				
+					if ($this->input->post('field_type_'.$i)=='select') {
+						$varr = array();
+						foreach (explode("\n",trim($this->input->post('select_options_'.$i))) as $kk => $vv){
+              					$varr[] = $vv;
+						}		
+				$outstr .=				"{
+                  type: {renderer: myAutocompleteRenderer, editor: Handsontable.AutocompleteEditor},
+              source: ".json_encode($varr).",
+			strict: false
+					} ";
+      
+					}
+	/*$outstr .= "{
+                  type: {renderer: myAutocompleteRenderer, editor: Handsontable.AutocompleteEditor},
+            source: ['Audi', 'BMW', 'Chrysler', 'Citroen', 'Mercedes', 'Nissan', 'Opel', 'Suzuki', 'Toyota', 'Volvo'],
+      strict: true
+                }";
+			} */
+		else if ($this->input->post('field_type_'.$i)=="text") {
+						
+						$outstr .=				"{ }";
+		
+						
+					}
+		else if ($this->input->post('field_type_'.$i)=='checkbox' ) {
+			
+						$outstr .=				"{  
+													type: 'checkbox' 
+													}";
+			
+			
+		}
+		//data: '".$this->input->post('header_'.$i)."',
+				else if ($this->input->post('field_type_'.$i)=="date") {
+						
+						$outstr .=				"{ 
+										type: 'date',
+										dateFormat: 'yy-mm-dd'
+													}";
+	
+						
+					}
+					else if ($this->input->post('field_type_'.$i)=="numeric_curr") {
+					     $outstr .= "{ type: 'numeric',
+									format: '0,0.00 $',
+										language: 'de-de'
+									}";
+		
+				}
+				
+									if ($i!=($ngc-1)) $outstr .= ",";				
+		}
+    
+           $outstr .= "] }); 
+           var myht = $('#my_ht_".$rs."').handsontable('getData');
+           </script>";		
+                
+		$outstr .= "<script> 
+		$('#remove_grid_element_".$rs."').click(function (e) {
+	e.preventDefault();
+	bootbox.confirm('Are you sure?', function(result) {
+if (result) {
+	window.location.assign('".site_url('create_form/remove_field/'.$rs.'/'.$coln.'/'.$fnm)."');
+}	else { bootbox.hideAll(); return false; }
+});
+	
+	});
+		$( '#".$rs."' ).draggable();
+		$('#my_ht_".$rs." div.wtHolder').not(':eq(0)').html('');
+		$('#my_ht_".$rs." div.wtHolder').not(':eq(0)').remove();
+		
+		</script>";															
+		$outstr .= "</div>                   
+                  </div>";
+        $newftxt = $oldftxt."".$outstr;
+        $dtu = array (
+			'form_text' => $newftxt
+					);
+		$this->db->where('id',$mf->id);			
+		$this->db->update('my_forms',$dtu);			
+		$str = "<div class='alert alert-success' id='my_alert_div'>
+							<button type='button' class='close' data-dismiss='alert'>x</button>
+							<strong>Excel-type Grid </strong>element added.
+						</div><script> $('#my_alert_div').fadeOut(3000); </script>";
+		$this->session->set_flashdata('message',$str);
+			redirect(site_url('create_form/edit_form/'.$mf->id));
+}
+else {
+		$this->throw_field_exists_error();
+	}
+}
+
+
